@@ -46,11 +46,12 @@ export class HomePage {
 
       this.getService.login(user).subscribe(loggedUser=>{
         if(loggedUser.professor != null){
+          console.log("loggato");
           this.professor = loggedUser.professor;
-          this.navCtrl(ProfessorHomePage, {param: {user: this.professor}});
+          //this.navCtrl(ProfessorHomePage, {param: {user: this.professor}});
         }else if (loggedUser.student != null){
           this.student = loggedUser.student;
-          this.navCtrl.push(StudentHomePage, {param: {user: this.student}})
+          //this.navCtrl.push(StudentHomePage, {param: {user: this.student}})
         }else{
           if(loggedUser == '0'){
             this.presentToast('timeout');
@@ -113,12 +114,12 @@ export class HomePage {
       duration: 3000,
       position: 'middle'
     });
-
+/*
     toast.onDidDismiss(() => {
       console.log('Dismissed toast');
     });
 
     toast.present();
-
+*/
   }
 }
