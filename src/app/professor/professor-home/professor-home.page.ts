@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../service/auth.service';
+import { Professor } from '../../models/Professor';
 
 @Component({
   selector: 'app-professor-home',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfessorHomePage implements OnInit {
 
-  constructor() { }
+  professor: Professor = null;
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
+    this.professor = this.authService.getLoggedUser('user');
+    console.log(this.professor);
   }
 
 }
