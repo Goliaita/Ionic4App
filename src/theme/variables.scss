@@ -74,4 +74,18 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+  /** Custom color **/
+  --unisalento: #f4ce42;
 }
+
+ion-header{
+  background-color: var(--unisalento)!important;
+}
+ion-toolbar{
+  --ion-toolbar-background: var(--unisalento);
+  --ion-toolbar-background-color: var(--unisalento);
+  background-color: var(--unisalento)!important;
+}
+
+
