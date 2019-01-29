@@ -6,4 +6,25 @@
 
 <ion-content padding>
 
+  <ion-list>
+    <ion-list-header>Select Module</ion-list-header>
+    <ion-item>
+      <ion-label>Module</ion-label>
+      <ion-select [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="Select One" [(ngModel)]="selectedModule"
+        (ionChange)="onSelectModule(selectedModule)">
+        <ion-select-option *ngFor="let module of modules" [value]="module">
+          {{ module.title }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+  <div *ngIf="this.selectedModule">
+
+    <ion-button href="/teaching-files/{{this.selectedModule.moduleId}}" expand="block" color="light">Teaching Material</ion-button>
+    <ion-button expand="block" color="light">File Upload</ion-button>
+    <ion-button expand="block" color="light">Chat</ion-button>
+    <ion-button expand="block" color="light">Notifications</ion-button>
+    <ion-button expand="block" color="light">Daily Class</ion-button>
+
+  </div>
 </ion-content>

@@ -7,6 +7,8 @@ import {AngularFireAuth} from "angularfire2/auth";
 import UserCredential = firebase.auth.UserCredential;
 import {ProfessorHomePage} from '../professor/professor-home/professor-home.page';
 import {StudentHomePage} from '../student/student-home/student-home.page';
+import { Router } from '@angular/router';
+import { AuthService } from '../service/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -26,10 +28,11 @@ export class HomePage {
 
   userCredentials: UserCredential;
 
-  constructor(private navCtrl: NavController,
-              private getService: GetService,
+  constructor(private getService: GetService,
               private authFire: AngularFireAuth,
-              private toastCtrl: ToastController) {
+              private toastCtrl: ToastController,
+              private router: Router,
+              private authService: AuthService) {
 
   }
 
@@ -48,10 +51,14 @@ export class HomePage {
         if(loggedUser.professor != null){
           console.log("loggato");
           this.professor = loggedUser.professor;
-          //this.navCtrl(ProfessorHomePage, {param: {user: this.professor}});
+
+          this.authService.sendToken(this.professor, 'user');
+          this.router.navigate(['professor-home']);
+          console.log(loggedUser.professor);
         }else if (loggedUser.student != null){
           this.student = loggedUser.student;
-          //this.navCtrl.push(StudentHomePage, {param: {user: this.student}})
+          this.authService.sendToken(this.student, 'user');
+          this.router.navigate(['student-home']);
         }else{
           if(loggedUser == '0'){
             this.presentToast('timeout');
@@ -114,12 +121,5 @@ export class HomePage {
       duration: 3000,
       position: 'middle'
     });
-/*
-    toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
-    });
-
-    toast.present();
-*/
   }
 }

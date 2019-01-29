@@ -5,5 +5,19 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Files</ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let file of files">
+      <ion-icon name="arrow-dropright"></ion-icon>
+      {{file.fileName}}
+      <div class="item-note" slot="end">
+        {{file.created}}
+<!--           <ion-datetime displayFormat="D MMM YYYY H:mm" min="1997" max="2010" value="{{file.created}}"></ion-datetime>
+ -->      </div>
+    </ion-item>
+  </ion-list>
+
 
 </ion-content>
