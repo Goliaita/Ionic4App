@@ -49,7 +49,9 @@ export class HomePage {
 
       this.getService.login(user).subscribe(loggedUser=>{
         if(loggedUser.professor != null){
+          console.log("loggato");
           this.professor = loggedUser.professor;
+
           this.authService.sendToken(this.professor, 'user');
           this.router.navigate(['professor-home']);
           console.log(loggedUser.professor);
@@ -119,12 +121,5 @@ export class HomePage {
       duration: 3000,
       position: 'middle'
     });
-
-/*     toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
-    });
-
-    toast.present();
- */
   }
 }

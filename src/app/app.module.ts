@@ -18,6 +18,8 @@ import {AngularFireAuthModule} from "@angular/fire/auth";
 import {AngularFireStorageModule} from "@angular/fire/storage";
 import {HttpClientModule} from '@angular/common/http';
 
+import { HttpClientModule } from '@angular/common/http';
+
 import { environment } from '../environments/environment';
 
 
@@ -39,8 +41,11 @@ import { environment } from '../environments/environment';
     StatusBar,
     SplashScreen,
     GetService,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    HttpClientModule
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+
+
 })
 export class AppModule {}
