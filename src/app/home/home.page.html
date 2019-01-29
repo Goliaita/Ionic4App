@@ -10,26 +10,36 @@
   <ion-list>
     <ion-item>
       <ion-label position="floating">Email</ion-label>
-      <ion-input inputmode="email" [(ngModel)]="email"></ion-input>
+      <ion-input inputmode="email" required [ngModel]="email" pattern="email"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label position="floating">Password</ion-label>
-      <ion-input inputmode=type [(ngModel)]="password" >
+      <div class="row clearfix">
+        <div class="pass-label column">
+          <ion-label position="floating">Password</ion-label>
+          <ion-input type="{{type}}" required [ngModel]="password" pattern="password" style=""></ion-input>
+        </div>
+        <div class="pass-button column" *ngIf="showPass">
+          <ion-button size="small" color="dark"
+                      style="background-color: transparent" fill="clear"
+                      (click)="showPassword()">
+            <ion-icon slot="icon-only" name="eye" size="small"></ion-icon>
+          </ion-button>
+        </div>
+        <div *ngIf="!showPass" class="pass-button column">
+          <ion-button size="small"  color="dark"
+                      style="background-color: transparent" fill="clear"
+                      (click)="showPassword()">
+            <ion-icon slot="icon-only" name="eye-off" size="small" ></ion-icon>
+          </ion-button>
+        </div>
+      </div>
 
-        <ion-button *ngIf="!showPass" color="dark" fill="left" style="margin-bottom: 2%; margin-top: auto;"
-                    (click)="showPassword()">
-          <ion-icon name="eye-off"></ion-icon>
-        </ion-button>
-        <!--suppress HtmlUnknownAttribute -->
-        <ion-button *ngIf="showPass"  color="dark" style="margin-bottom: 2%; margin-top: auto;"
-                item-right (click)="showPassword()">
-          <ion-icon name="eye"></ion-icon>
-        </ion-button>
-      </ion-input>
     </ion-item>
   </ion-list>
 
   <!--suppress HtmlUnknownAttribute -->
-  <ion-button expand="block" color="var(--unisalento)" type="submit"(click)="submit()">Sing In</ion-button>
+  <ion-button expand="block" color="var(--unisalento)" style="color: #1e2023" type="submit" (click)="submit()">
+    Sing In
+  </ion-button>
 </ion-content>
