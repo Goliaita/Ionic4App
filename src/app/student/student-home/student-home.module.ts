@@ -14,15 +14,6 @@ const routes: Routes = [
     path: '',
     component: StudentHomePage
   },
-  {
-    path: 'teaching-material',
-    component: TeachingFilesPage
-  },
-  {
-   path: 'chat-page',
-   component: ChatPagePage
-  }
-
 ];
 
 @NgModule({

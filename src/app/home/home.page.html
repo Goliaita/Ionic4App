@@ -10,14 +10,14 @@
   <ion-list>
     <ion-item>
       <ion-label position="floating">Email</ion-label>
-      <ion-input inputmode="email" required [ngModel]="email" pattern="email"></ion-input>
+      <ion-input inputmode="email" required [(ngModel)]="email" pattern="email"></ion-input>
     </ion-item>
 
     <ion-item>
       <div class="row clearfix">
         <div class="pass-label column">
           <ion-label position="floating">Password</ion-label>
-          <ion-input type="{{type}}" required [ngModel]="password" pattern="password" style=""></ion-input>
+          <ion-input type="{{type}}" required [(ngModel)]="password" pattern="password" ></ion-input>
         </div>
         <div class="pass-button column" *ngIf="showPass">
           <ion-button size="small" color="dark"
