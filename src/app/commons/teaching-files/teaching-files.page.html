@@ -10,14 +10,35 @@
       <ion-label>Files</ion-label>
     </ion-list-header>
     <ion-item *ngFor="let file of files">
-      <ion-icon name="arrow-dropright"></ion-icon>
-      {{file.fileName}}
-      <div class="item-note" slot="end">
-        {{file.created}}
-<!--           <ion-datetime displayFormat="D MMM YYYY H:mm" min="1997" max="2010" value="{{file.created}}"></ion-datetime>
- -->      </div>
+
+      <ion-card>
+        <ion-item>
+          <ion-icon name="document" slot="start"></ion-icon>
+          <ion-label>{{file.fileName}}</ion-label>
+          <ion-button fill="outline" slot="end">Download</ion-button>
+        </ion-item>
+
+        <ion-card-content>
+          Title: {{file.fileName}}
+          <br> Created: {{file.created}}
+          <br> Size: {{this.humanFileSize(file.size,1)}}
+        </ion-card-content>
+      </ion-card>
     </ion-item>
   </ion-list>
 
-
 </ion-content>
+
+<!-- <ion-card>
+            <ion-card-header>
+              <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+            <ion-icon name="download" slot="start"></ion-icon>
+              <ion-card-title>{{file.fileName}}</ion-card-title>
+            </ion-card-header>
+          
+            <ion-card-content>
+              Created: {{file.created}}
+              <br>
+              Size: {{this.humanFileSize(file.size,1)}}
+            </ion-card-content>
+          </ion-card> -->
