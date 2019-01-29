@@ -14,26 +14,21 @@
     </ion-item>
 
     <ion-item>
-      <div class="row clearfix">
-        <div class="pass-label column">
-          <ion-label position="floating">Password</ion-label>
-          <ion-input type="{{type}}" required [(ngModel)]="password" pattern="password" ></ion-input>
-        </div>
-        <div class="pass-button column" *ngIf="showPass">
-          <ion-button size="small" color="dark"
-                      style="background-color: transparent" fill="clear"
-                      (click)="showPassword()">
-            <ion-icon slot="icon-only" name="eye" size="small"></ion-icon>
-          </ion-button>
-        </div>
-        <div *ngIf="!showPass" class="pass-button column">
-          <ion-button size="small"  color="dark"
-                      style="background-color: transparent" fill="clear"
-                      (click)="showPassword()">
-            <ion-icon slot="icon-only" name="eye-off" size="small" ></ion-icon>
-          </ion-button>
-        </div>
+      <div slot="start">
+        <ion-label position="floating">Password</ion-label>
+        <ion-input type="{{type}}" required [(ngModel)]="password" pattern="password" ></ion-input>
       </div>
+
+      <ion-button size="small" color="dark" slot="end" *ngIf="showPass" class="pass-button"
+                  style="background-color: transparent; margin: 0; padding: 0;  " fill="clear"
+                  (click)="showPassword()">
+        <ion-icon slot="icon-only" name="eye" size="small"></ion-icon>
+      </ion-button>
+      <ion-button size="small" color="dark" slot="end" *ngIf="!showPass" class="pass-button"
+                  style="background-color: transparent" fill="clear"
+                  (click)="showPassword()">
+        <ion-icon slot="icon-only" name="eye-off" size="small"></ion-icon>
+      </ion-button>
 
     </ion-item>
   </ion-list>

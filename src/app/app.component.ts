@@ -19,11 +19,7 @@ export class AppComponent {
     type: ''
   };
 
-  public appPages = [
-      {title: 'Home', url: '/' + this.user.type + '-home', icon: 'home'},
-
-
-  ];
+  public appPages = [];
 
   constructor(
     private platform: Platform,
@@ -32,8 +28,22 @@ export class AppComponent {
     private event: Events) {
     this.initializeApp();
     event.subscribe('parsing:data', (user) => {
+      user.url = user.url.substr(1).slice(0, -1);
       this.user = user;
+      if(this.user.type == 'student') {
+        this.appPages = [
+          {title: 'Home', url: '/' + this.user.type + '-home', icon: 'home'},
+          {title: 'Chat', url: '/chat-page', icon: 'chatbubbles'},
+          {title: 'Gradimento', url: '/approval', icon: 'star'}
+        ];
+      }else{
+        this.appPages = [
+          {title: 'Home', url: '/' + this.user.type + '-home', icon: 'home'},
+          {title: 'Chat', url: '/chat-page', icon: 'chatbubbles'}
+          ];
+      }
     });
+
   }
 
   initializeApp() {
