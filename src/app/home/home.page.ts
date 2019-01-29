@@ -28,8 +28,7 @@ export class HomePage {
 
   userCredentials: UserCredential;
 
-  constructor(private navCtrl: NavController,
-              private getService: GetService,
+  constructor(private getService: GetService,
               private authFire: AngularFireAuth,
               private toastCtrl: ToastController,
               private router: Router,
@@ -54,12 +53,10 @@ export class HomePage {
           this.authService.sendToken(this.professor, 'user');
           this.router.navigate(['professor-home']);
           console.log(loggedUser.professor);
-          //this.navCtrl(ProfessorHomePage, {param: {user: this.professor}});
         }else if (loggedUser.student != null){
           this.student = loggedUser.student;
           this.authService.sendToken(this.student, 'user');
           this.router.navigate(['student-home']);
-         // this.navCtrl.push(StudentHomePage, {param: {user: this.student}})
         }else{
           if(loggedUser == '0'){
             this.presentToast('timeout');
