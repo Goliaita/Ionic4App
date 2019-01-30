@@ -22,6 +22,7 @@ export class ProfessorHomePage implements OnInit {
     this.professor = this.authService.getLoggedUser('user');
     this.getService.findModuleByProf(this.professor.professorId).subscribe(modules => {
       this.modules = modules;
+      console.log(this.modules);
     });
   }
 
