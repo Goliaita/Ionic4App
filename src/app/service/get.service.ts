@@ -17,13 +17,15 @@ const httpOptions = {
 })
 export class GetService {
 
+  //IP = 'localhost';
   IP = 'localhost';
-  //loginUrl: string = 'http://localhost:8080/SpringApp/login/';
+
   loginUrl: string = 'http://' + this.IP + ':8080/SpringApp/login/';
   findCourseByProfessorIdUrl: string = 'http://' + this.IP + ':8080/SpringApp/professor/findModuleByProfessorId/';
   findAllStudentByCourseUrl: string = 'http://' + this.IP + ':8080/SpringApp/student/findAll/';
   findProfessorsByCourseIdUrl: string = 'http://' + this.IP + ':8080/SpringApp/module/findAll/';
   findModuleByProfUrl: string = 'http://' + this.IP + ':8080/SpringApp/module/findByProf/';
+
   findFileByModuleUrl: string = 'http://localhost:8080/SpringApp/teachingMaterial/findByModule/';
   downloadFileUrl: string = 'http://localhost:8080/SpringApp/teachingMaterial/downloadFile/'
 
@@ -61,8 +63,8 @@ export class GetService {
     return this.http.get<Array<TeachingMaterial>>(this.findFileByModuleUrl + moduleId);
   }
 
-  downloadFile(fileId: number): Observable<File>{
-    return this.http.get<File>(this.downloadFileUrl + fileId);
+  downloadFile(fileId: number){
+    return this.downloadFileUrl + fileId;
   }
 
 }

@@ -16,7 +16,7 @@ export class TeachingFilesPage implements OnInit {
   id: string = null;
 
   constructor(private getService: GetService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
@@ -40,8 +40,8 @@ export class TeachingFilesPage implements OnInit {
   };
 
   onDownload(fileId: number) {
-    console.log(fileId)
-    
+    console.log(fileId);
+    window.open(this.getService.downloadFile(fileId), '_blank');
   }
 
 }
