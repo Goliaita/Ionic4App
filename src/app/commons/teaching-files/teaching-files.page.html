@@ -5,22 +5,21 @@
 </ion-header>
 
 <ion-content padding>
+
   <ion-list>
     <ion-list-header>
       <ion-label>Files</ion-label>
     </ion-list-header>
     <ion-item *ngFor="let file of files">
-
       <ion-card>
         <ion-item>
           <ion-icon name="document" slot="start"></ion-icon>
           <ion-label>{{file.fileName}}</ion-label>
           <ion-button fill="outline" slot="end">Download</ion-button>
         </ion-item>
-
         <ion-card-content>
           Title: {{file.fileName}}
-          <br> Created: {{file.created}}
+          <br> Created: {{file.created | date: 'dd MMM yyyy H:mm'}}
           <br> Size: {{this.humanFileSize(file.size,1)}}
         </ion-card-content>
       </ion-card>
@@ -28,17 +27,3 @@
   </ion-list>
 
 </ion-content>
-
-<!-- <ion-card>
-            <ion-card-header>
-              <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-            <ion-icon name="download" slot="start"></ion-icon>
-              <ion-card-title>{{file.fileName}}</ion-card-title>
-            </ion-card-header>
-          
-            <ion-card-content>
-              Created: {{file.created}}
-              <br>
-              Size: {{this.humanFileSize(file.size,1)}}
-            </ion-card-content>
-          </ion-card> -->

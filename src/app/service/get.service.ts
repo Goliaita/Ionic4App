@@ -24,7 +24,8 @@ export class GetService {
   findAllStudentByCourseUrl: string = 'http://' + this.IP + ':8080/SpringApp/student/findAll/';
   findProfessorsByCourseIdUrl: string = 'http://' + this.IP + ':8080/SpringApp/module/findAll/';
   findModuleByProfUrl: string = 'http://' + this.IP + ':8080/SpringApp/module/findByProf/';
-  findFileByModuleUrl: string = "http://localhost:8080/SpringApp/teachingMaterial/findByModule/";
+  findFileByModuleUrl: string = 'http://localhost:8080/SpringApp/teachingMaterial/findByModule/';
+  downloadFileUrl: string = 'http://localhost:8080/SpringApp/teachingMaterial/downloadFile/'
 
   constructor(public http: HttpClient) {
     console.log('Hello GetProvider Provider');
@@ -58,6 +59,10 @@ export class GetService {
 
   findFileByModule(moduleId: number): Observable<Array<TeachingMaterial>>{
     return this.http.get<Array<TeachingMaterial>>(this.findFileByModuleUrl + moduleId);
+  }
+
+  downloadFile(fileId: number): Observable<File>{
+    return this.http.get<File>(this.downloadFileUrl + fileId);
   }
 
 }
