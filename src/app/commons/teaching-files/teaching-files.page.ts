@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { GetService } from '../../service/get.service';
-import { TeachingMaterial } from '../../models/TeachingMaterial';
+import { TeachingMaterial, humanFileSize } from '../../models/TeachingMaterial';
 import { ActivatedRoute } from '@angular/router';
+
+
 
 @Component({
   selector: 'app-teaching-files',
@@ -21,8 +23,20 @@ export class TeachingFilesPage implements OnInit {
     console.log(this.id)
     this.getService.findFileByModule(Number(this.id)).subscribe(files =>{
       this.files = files;
-      console.log(this.files)
+      console.log(this.files);
     });
   }
+
+  humanFileSize(bytes, si) {
+    var thresh = si ? 1000 : 1024;
+    if(bytes < thresh) return bytes + ' B';
+    var units = si ? ['kB','MB','GB','TB','PB','EB','ZB','YB'] : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
+    var u = -1;
+    do {
+        bytes /= thresh;
+        ++u;
+    } while(bytes >= thresh);
+    return bytes.toFixed(1)+' '+units[u];
+};
 
 }
