@@ -18,6 +18,11 @@ import {AngularFireAuthModule} from "@angular/fire/auth";
 import {AngularFireStorageModule} from "@angular/fire/storage";
 import {HttpClientModule} from '@angular/common/http';
 
+import { FileTransfer} from '@ionic-native/file-transfer/ngx';
+import {File} from '@ionic-native/file/ngx'
+import {DocumentViewer} from '@ionic-native/document-viewer/ngx'
+import { FileOpener } from '@ionic-native/file-opener/ngx';
+
 import { environment } from '../environments/environment';
 
 
@@ -40,7 +45,11 @@ import { environment } from '../environments/environment';
     SplashScreen,
     GetService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    HttpClientModule
+    HttpClientModule,
+    FileTransfer,
+    File,
+    DocumentViewer,
+    FileOpener
   ],
   bootstrap: [AppComponent],
 

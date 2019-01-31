@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { GetService } from '../../service/get.service';
 import { TeachingMaterial } from '../../models/TeachingMaterial';
 import { ActivatedRoute } from '@angular/router';
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { File } from '@ionic-native/file/ngx';
+import { ToastController } from '@ionic/angular';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
 
 
 
@@ -16,7 +20,13 @@ export class TeachingFilesPage implements OnInit {
   id: string = null;
 
   constructor(private getService: GetService,
-    private route: ActivatedRoute) {}
+    private route: ActivatedRoute,
+    private transfer: FileTransfer,
+    private file: File,
+    private toastCtrl: ToastController,
+    private fileOpener: FileOpener) {
+  }
+
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
@@ -26,6 +36,7 @@ export class TeachingFilesPage implements OnInit {
       console.log(this.files);
     });
   }
+
 
   humanFileSize(bytes, si) {
     var thresh = si ? 1000 : 1024;
@@ -39,9 +50,50 @@ export class TeachingFilesPage implements OnInit {
     return bytes.toFixed(1) + ' ' + units[u];
   };
 
-  onDownload(fileId: number) {
+  onDownload(fileId: number, fileName: string, fileType: string) {
     console.log(fileId);
-    window.open(this.getService.downloadFile(fileId), '_blank');
+    const fileTransfer: FileTransferObject = this.transfer.create();
+    const url = this.getService.downloadFile(fileId);
+    fileTransfer.download(url, this.file.externalRootDirectory +
+      '/Download/' + fileName).then((entry) => {
+        console.log('download complete: ' + entry.toURL());
+        this.presentToastWithOptions(this.file.externalRootDirectory +
+          '/Download/' + fileName, fileType);
+      }, (error) => {
+        console.log(error)
+      });
+    //window.open(this.getService.downloadFile(fileId), '_blank');
   }
 
+  async presentToast() {
+    const toast = await this.toastCtrl.create({
+      message: 'File has been downloaded to the Downloads folder.',
+      duration: 3000
+    });
+    toast.present();
+  }
+
+  openFile(filePath, fileType){
+    console.log(filePath + "--->" + fileType)
+    this.fileOpener.open(filePath, fileType)
+  .then(() => console.log('File is opened'))
+  .catch(e => console.log('Error opening file', e));
+  }
+
+  async presentToastWithOptions(filePath, fileType) {
+    const toast = await this.toastCtrl.create({
+      message: 'File has been downloaded to the Downloads folder. Click to Open',
+      showCloseButton: true,
+      position: 'bottom',
+      duration: 3000,
+      closeButtonText: 'Open'
+    });
+    toast.present();
+    const dismiss = await toast.onDidDismiss();
+    dismiss.data = filePath;
+    console.log('Dismissed toast', dismiss);
+    if (dismiss.role === 'cancel') {
+      this.openFile(filePath, fileType);
+    }
+  }
 }

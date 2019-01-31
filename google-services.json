@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1038272327171",
+    "firebase_url": "https://webchat-9032a.firebaseio.com",
+    "project_id": "webchat-9032a",
+    "storage_bucket": "webchat-9032a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1038272327171:android:4613892da29ae156",
+        "android_client_info": {
+          "package_name": "web.ionicapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1038272327171-degvh6mnu7a5ins9cnjbpi1pfuuknr6e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5gLHN-oI5ICHxqA6qTCH0AdInw9vmZhs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

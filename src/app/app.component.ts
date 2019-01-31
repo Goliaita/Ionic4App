@@ -26,6 +26,7 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private event: Events) {
+      console.log("HELLO")
     this.initializeApp();
     event.subscribe('parsing:data', (user) => {
       user.url = user.url.substr(1).slice(0, -1);
