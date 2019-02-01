@@ -32,7 +32,8 @@ export class HomePage {
               private toastCtrl: ToastController,
               private router: Router,
               private authService: AuthService,
-              private fireStore: AngularFireStorage) { }
+              private fireStore: AngularFireStorage,
+              private events: Events) { }
 
   submit(){
     console.log(this.email + ' ' + this.password);
@@ -53,18 +54,32 @@ export class HomePage {
           this.fireStore.storage.ref('/images/' + this.professor.person.personId + '/firebase-ico.png').
           getDownloadURL().then(result =>{
             this.authService.sendToken(result, 'image');
+            let user = {
+              firstName: this.student.person.firstName,
+              lastName: this.student.person.lastName,
+              url: result,
+              type: 'professor'
+            };
+            this.authService.sendToken(user, 'common');
+            this.events.publish('parsing:data', user);
           });
           this.router.navigate(['professor-home']);
-          console.log(loggedUser.professor);
         }else if (loggedUser.student != null){
           this.student = loggedUser.student;
           this.authService.sendToken(this.student, 'user');
           this.fireStore.storage.ref('/images/' + this.student.person.personId + '/firebase-ico.png').
           getDownloadURL().then(result =>{
             this.authService.sendToken(result, 'image');
+            let user = {
+              firstName: this.student.person.firstName,
+              lastName: this.student.person.lastName,
+              url: result,
+              type: 'student'
+            };
+            this.authService.sendToken(user, 'common');
+            this.events.publish('parsing:data', user);
           });
           this.router.navigate(['student-home']);
-          console.log(loggedUser.student);
         }else{
           if(loggedUser == '0'){
             this.presentToast('timeout');

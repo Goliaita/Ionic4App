@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      chat-list
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="messages == null && courseModuleList == null && studentModuleList == null">
+    <ion-list>
+      <ion-item *ngFor="let chat of chatList" lines="none" >
+        <ion-card style="background-color: var(--unisalento); color: black; width: 100%"
+                  (click)="selectChat(chat)">
+          <ion-card-header>
+            <b style="color: #000000;">{{chat.chatName}}</b>
+          </ion-card-header>
+          <ion-card-content>
+            {{chat.chatType}}
+          </ion-card-content>
+        </ion-card>
+      </ion-item>
+    </ion-list>
+  </div>
+
+</ion-content>
+<ion-footer translucent="true">
+  <ion-toolbar style="background-color: transparent!important; width: 100%;">
+    <ion-button slot="end" color="dark" style="background-color: transparent" fill="clear"
+                (click)="findPeople()">
+      <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

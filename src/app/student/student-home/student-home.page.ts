@@ -21,14 +21,6 @@ export class StudentHomePage implements OnInit {
               private fireStore: AngularFireStorage) {
     this.student = this.authService.getLoggedUser('user');
     this.url = this.authService.getToken('image');
-    let user = {
-      firstName: this.student.person.firstName,
-      lastName: this.student.person.lastName,
-      url: this.url,
-      type: 'student'
-    };
-    this.events.publish('parsing:data', user);
-
   }
 
   ngOnInit() {
