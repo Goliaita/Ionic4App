@@ -15,13 +15,16 @@
         <ion-item>
           <ion-icon name="document" slot="start"></ion-icon>
           <ion-label>{{file.fileName}}</ion-label>
-          <ion-icon name="star-half"></ion-icon>
+          <ion-icon name="star-half" (click)="onRate(file.teachingMaterialId)"></ion-icon>
           <ion-icon name="download" (click)="onDownload(file.teachingMaterialId, file.fileName, file.fileType)"></ion-icon>
         </ion-item>
         <ion-card-content>
           Title: {{file.fileName}}
           <br> Created: {{file.created | date: 'dd MMM yyyy H:mm'}}
           <br> Size: {{this.humanFileSize(file.size,1)}}
+          <div *ngIf="this.showRateId === file.teachingMaterialId">
+            <app-rating [file]="file"></app-rating>
+          </div>
         </ion-card-content>
       </ion-card>
     </ion-item>

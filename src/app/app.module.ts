@@ -20,10 +20,11 @@ import {HttpClientModule} from '@angular/common/http';
 
 import { FileTransfer} from '@ionic-native/file-transfer/ngx';
 import {File} from '@ionic-native/file/ngx'
-import {DocumentViewer} from '@ionic-native/document-viewer/ngx'
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 
 import { environment } from '../environments/environment';
+import { TeachingFilesPage } from './commons/teaching-files/teaching-files.page';
+import { TeachingFilesPageModule } from './commons/teaching-files/teaching-files.module';
 
 
 @NgModule({
@@ -48,10 +49,10 @@ import { environment } from '../environments/environment';
     HttpClientModule,
     FileTransfer,
     File,
-    DocumentViewer,
     FileOpener
   ],
   bootstrap: [AppComponent],
+  exports: [],
 
 
 })

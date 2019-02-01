@@ -1,0 +1,12 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-subtitle>Rate this file</ion-card-subtitle>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-item>
+      <ion-range min="0" max="5" step="1" snaps="true" color="dark" [(ngModel)]="rate"></ion-range>
+      <ion-icon name="checkmark" (click)="onSubmit()"></ion-icon>
+    </ion-item>
+    Rate: {{rate}}/5
+  </ion-card-content>
+</ion-card>
