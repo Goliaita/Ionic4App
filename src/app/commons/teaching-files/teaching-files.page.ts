@@ -23,6 +23,7 @@ export class TeachingFilesPage implements OnInit {
   id: string = null;
   showRateId: number = null;
   studentUser: boolean = false;
+  dict = [];
 
   constructor(private getService: GetService,
     private route: ActivatedRoute,
@@ -37,11 +38,33 @@ export class TeachingFilesPage implements OnInit {
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
-    if (this.authService.getToken('token') == '"student"')
-      this.studentUser = true;
+    
+
     this.getService.findFileByModule(Number(this.id)).subscribe(files => {
       this.files = files;
       console.log(this.files);
+      if (this.authService.getToken('token') == '"student"'){
+        this.studentUser = true;
+      } else {
+        this.files.forEach(file => {
+          this.getService.findRatingByTMId(file.teachingMaterialId).subscribe(ratings =>{
+            if (ratings != null){
+              var sum: number = 0;
+              ratings.forEach(rating => {
+                sum = sum + Number(rating.rate);
+              });
+              var average = sum / ratings.length;
+              file.meanRate = average;
+              //this.dict[file.teachingMaterialId] = average;
+               this.dict.push({
+                 file: file,
+                id: file.teachingMaterialId,
+                mean: average
+              });  
+            }
+          });
+        });
+      }
     });
   }
 
@@ -53,7 +76,10 @@ export class TeachingFilesPage implements OnInit {
   };
 
 
+prova(){
+  console.log(this.dict)
 
+}
   onDownload(fileId: number, fileName: string, fileType: string) {
     console.log(fileId);
     const fileTransfer: FileTransferObject = this.transfer.create();

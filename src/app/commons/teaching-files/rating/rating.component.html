@@ -5,7 +5,7 @@
     </ion-card-header>
     <ion-card-content>
       <ion-item>
-        <ion-range min="0" max="5" step="1" snaps="true" color="dark" [(ngModel)]="rate"></ion-range>
+        <ion-range min="0" max="5" step="1" snaps="true" color="medium" [(ngModel)]="rate"></ion-range>
         <ion-icon name="checkmark" (click)="onSubmit()"></ion-icon>
       </ion-item>
       Rate: {{rate}}/5
@@ -13,7 +13,9 @@
   </ion-card>
 </div>
 <div *ngIf="this.rated">
-  <ion-item>
-    Rated: {{this.rating.rate}}/5
-  </ion-item>
+    <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle>Rate: {{this.rating.rate}}/5</ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
 </div>

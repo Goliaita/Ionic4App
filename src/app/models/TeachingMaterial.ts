@@ -8,4 +8,5 @@ export interface TeachingMaterial{
     fileType?: string;
     created?: Date;
     size?: number;
+    meanRate?: number;
 }
