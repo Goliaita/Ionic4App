@@ -15,8 +15,16 @@
         <ion-item>
           <ion-icon name="document" slot="start"></ion-icon>
           <ion-label>{{file.fileName}}</ion-label>
-          <ion-icon name="star-half" (click)="onRate(file.teachingMaterialId)"></ion-icon>
-          <ion-icon name="download" (click)="onDownload(file.teachingMaterialId, file.fileName, file.fileType)"></ion-icon>
+          
+          <!-- <div *ngIf='this.studentUser'> -->
+            <!-- <ion-button color="light"> -->
+              <ion-icon *ngIf='this.studentUser' name="star-half" (click)="onRate(file.teachingMaterialId)"></ion-icon>
+           <!--  </ion-button> -->
+           <!--  </div> -->
+          <!-- <ion-button color="light"> -->
+            <ion-icon name="download" (click)="onDownload(file.teachingMaterialId, file.fileName, file.fileType)"></ion-icon>
+          <!-- </ion-button> -->
+
         </ion-item>
         <ion-card-content>
           Title: {{file.fileName}}

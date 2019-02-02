@@ -6,6 +6,7 @@ import {Student} from '../models/Student';
 import {Login} from '../models/Login';
 import {timeout, catchError} from 'rxjs/operators';
 import { TeachingMaterial } from '../models/TeachingMaterial';
+import { TmRating } from '../models/TmRating';
 
 
 const httpOptions = {
@@ -18,7 +19,7 @@ const httpOptions = {
 export class GetService {
 
   //IP = 'localhost';
-  IP = '192.168.1.3';
+  IP = '192.168.1.6';
 
   loginUrl: string = 'http://' + this.IP + ':8080/SpringApp/login/';
   findCourseByProfessorIdUrl: string = 'http://' + this.IP + ':8080/SpringApp/professor/findModuleByProfessorId/';
@@ -28,6 +29,7 @@ export class GetService {
 
   findFileByModuleUrl: string = 'http://' + this.IP + ':8080/SpringApp/teachingMaterial/findByModule/';
   downloadFileUrl: string = 'http://' + this.IP + ':8080/SpringApp/teachingMaterial/downloadFile/'
+  findTRByStudentAndTMUrl: string = 'http://' + this.IP + ':8080/SpringApp/tmRating/findByStudentAndTM/';
 
   constructor(public http: HttpClient) {
     console.log('Hello GetProvider Provider');
@@ -65,6 +67,10 @@ export class GetService {
 
   downloadFile(fileId: number){
     return this.downloadFileUrl + fileId;
+  }
+
+  findTRByStudentAndTM(studentId: number, teachingMaterialId: number): Observable<TmRating>{
+    return this.http.get<TmRating>(this.findTRByStudentAndTMUrl + studentId + '/' + teachingMaterialId);
   }
 
 }

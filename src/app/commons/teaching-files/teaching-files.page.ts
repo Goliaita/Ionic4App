@@ -8,6 +8,7 @@ import { ToastController } from '@ionic/angular';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { ProfessorHomePage } from '../../professor/professor-home/professor-home.page';
 import { AlertController } from '@ionic/angular';
+import { AuthService } from '../../service/auth.service';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class TeachingFilesPage implements OnInit {
   files: Array<TeachingMaterial>
   id: string = null;
   showRateId: number = null;
+  studentUser: boolean = false;
 
   constructor(private getService: GetService,
     private route: ActivatedRoute,
@@ -28,13 +30,15 @@ export class TeachingFilesPage implements OnInit {
     private file: File,
     private toastCtrl: ToastController,
     private fileOpener: FileOpener,
-    private alertController: AlertController) {
+    private alertController: AlertController,
+    private authService: AuthService) {
   }
 
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
-    console.log(this.id)
+    if (this.authService.getToken('token') == '"student"')
+      this.studentUser = true;
     this.getService.findFileByModule(Number(this.id)).subscribe(files => {
       this.files = files;
       console.log(this.files);

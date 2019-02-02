@@ -50,6 +50,7 @@ export class HomePage {
           console.log("loggato");
           this.professor = loggedUser.professor;
           this.authService.sendToken(this.professor, 'user');
+          this.authService.sendToken('professor', 'token');
           this.fireStore.storage.ref('/images/' + this.professor.person.personId + '/firebase-ico.png').
           getDownloadURL().then(result =>{
             this.authService.sendToken(result, 'image');
@@ -59,6 +60,7 @@ export class HomePage {
         }else if (loggedUser.student != null){
           this.student = loggedUser.student;
           this.authService.sendToken(this.student, 'user');
+          this.authService.sendToken('student', 'token');
           this.fireStore.storage.ref('/images/' + this.student.person.personId + '/firebase-ico.png').
           getDownloadURL().then(result =>{
             this.authService.sendToken(result, 'image');
