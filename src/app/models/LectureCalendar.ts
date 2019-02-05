@@ -1,14 +1,15 @@
 import {Module} from "./Module";
 import {Room} from "./Room";
 import {RoomEquipment} from "./RoomEquipment";
+import { Time } from "@angular/common";
 
-export interface LectureCalendar {
+export interface Calendar {
   module?: Module;
   room?: Room;
-  lectureCalendarId?: number;
-  startTime?: string;
-  endTime?: string;
-  date?: string;
+  calendarId?: number;
+  startTime?: Date;
+  endTime?: Date;
+  date?: Date;
   day?: string;
   startDate?: string;
   endDate?: string;

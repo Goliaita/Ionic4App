@@ -1,0 +1,25 @@
+<div *ngIf="!this.rated">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>Rate this lecture</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+        <ion-input  placeholder="Leave a comment" [(ngModel)]="note"></ion-input>
+      </ion-item>
+        <ion-item>
+          <ion-range min="0" max="5" step="1" snaps="true" color="medium" [(ngModel)]="rate"></ion-range>
+          <ion-icon name="checkmark" *ngIf="note" (click)="onSubmit()"></ion-icon>
+        </ion-item>
+        Rate: {{rate}}/5
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <div *ngIf="this.rated">
+      <ion-card>
+          <ion-card-header>
+            <ion-card-subtitle>Rate: {{this.lectureRating.rate}}/5</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>Note: {{this.lectureRating.note}}</ion-card-content>
+        </ion-card>
+  </div>

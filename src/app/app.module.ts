@@ -19,7 +19,7 @@ import {AngularFireStorageModule} from "@angular/fire/storage";
 import {HttpClientModule} from '@angular/common/http';
 
 import { FileTransfer} from '@ionic-native/file-transfer/ngx';
-import {File} from '@ionic-native/file/ngx'
+import {File} from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 
 import { environment } from '../environments/environment';

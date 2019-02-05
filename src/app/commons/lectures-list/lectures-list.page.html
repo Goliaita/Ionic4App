@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>lectures-list</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+    <ion-list>
+        <ion-list-header>Select Module</ion-list-header>
+        <ion-item>
+          <ion-label>Module</ion-label>
+          <ion-select [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="Select One" [(ngModel)]="selectedModule"
+            (ionChange)="onSelectModule(selectedModule)">
+            <ion-select-option *ngFor="let module of modules" [value]="module">
+              {{ module.title }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+
+    <ion-list *ngIf="this.selectedModule">
+        <ion-list-header>
+          <ion-label>{{this.selectedModule.title}}'s Lectures</ion-label>
+        </ion-list-header>
+        <ion-item *ngFor="let lecture of lectures">
+          <ion-card>
+            <ion-item>
+              <ion-icon name="magnet" slot="start"></ion-icon>
+              <ion-label>{{lecture.date | date: 'longDate'}}</ion-label>
+              <ion-icon *ngIf='this.studentUser' name="star-half" (click)="onRate(lecture.calendarId)"></ion-icon>
+            </ion-item>
+            <ion-card-content>
+              From: {{lecture.startTime}} To: {{lecture.endTime}}
+              <br> Day: {{lecture.day}}
+              <br> Room: {{lecture.room.name}}
+              <div *ngIf="this.showRateId === lecture.calendarId">
+                  <app-lectures-rating [lecture]="lecture"></app-lectures-rating>
+                </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-item>
+      </ion-list>
+</ion-content>

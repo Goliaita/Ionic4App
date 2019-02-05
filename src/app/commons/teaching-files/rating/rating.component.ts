@@ -29,13 +29,13 @@ export class RatingComponent implements OnInit {
     this.getRating();
   }
 
-  getRating(){
+  getRating() {
     this.getService.findTRByStudentAndTM(this.student.studentId, this.file.teachingMaterialId).
-    subscribe(rating =>{
-      if (rating != null){
+    subscribe(rating => {
+      if (rating != null) {
         this.rating = rating;
         this.rated = true;
-      } else{
+      } else {
         this.rated = false;
       }
     });
@@ -45,8 +45,9 @@ export class RatingComponent implements OnInit {
     this.rating.student = this.student;
     this.rating.teachingMaterial = this.file;
     this.postService.postRating(this.rating).subscribe(rating => {
-      if (rating != null)
+      if (rating != null) {
         this.getRating();
-    })
-  };
+      }
+    });
+  }
 }

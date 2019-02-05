@@ -19,11 +19,10 @@ import { AuthService } from '../../service/auth.service';
 
 export class TeachingFilesPage implements OnInit {
 
-  files: Array<TeachingMaterial>
+  files: Array<TeachingMaterial>;
   id: string = null;
   showRateId: number = null;
   studentUser: boolean = false;
-  dict = [];
 
   constructor(private getService: GetService,
     private route: ActivatedRoute,
@@ -38,29 +37,22 @@ export class TeachingFilesPage implements OnInit {
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
-    
 
     this.getService.findFileByModule(Number(this.id)).subscribe(files => {
       this.files = files;
       console.log(this.files);
-      if (this.authService.getToken('token') == '"student"'){
+      if (this.authService.getToken('token') == '"student"') {
         this.studentUser = true;
       } else {
         this.files.forEach(file => {
-          this.getService.findRatingByTMId(file.teachingMaterialId).subscribe(ratings =>{
-            if (ratings != null){
+          this.getService.findRatingByTMId(file.teachingMaterialId).subscribe(ratings => {
+            if (ratings != null) {
               var sum: number = 0;
               ratings.forEach(rating => {
                 sum = sum + Number(rating.rate);
               });
               var average = sum / ratings.length;
               file.meanRate = average;
-              //this.dict[file.teachingMaterialId] = average;
-               this.dict.push({
-                 file: file,
-                id: file.teachingMaterialId,
-                mean: average
-              });  
             }
           });
         });
@@ -69,17 +61,13 @@ export class TeachingFilesPage implements OnInit {
   }
 
   onRate(teachingMaterialId) {
-    if (this.showRateId === teachingMaterialId)
+    if (this.showRateId === teachingMaterialId) {
       this.showRateId = null;
-    else
+    } else {
       this.showRateId = teachingMaterialId;
-  };
+    }
+  }
 
-
-prova(){
-  console.log(this.dict)
-
-}
   onDownload(fileId: number, fileName: string, fileType: string) {
     console.log(fileId);
     const fileTransfer: FileTransferObject = this.transfer.create();
