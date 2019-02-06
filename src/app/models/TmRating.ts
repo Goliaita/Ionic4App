@@ -1,5 +1,5 @@
-import { Student } from "./Student";
-import { TeachingMaterial } from "./TeachingMaterial";
+import { Student } from './Student';
+import { TeachingMaterial } from './TeachingMaterial';
 
 export interface TmRating {
 
@@ -7,5 +7,4 @@ export interface TmRating {
     student?: Student;
     teachingMaterial?: TeachingMaterial;
     rate?: string;
-	
 }

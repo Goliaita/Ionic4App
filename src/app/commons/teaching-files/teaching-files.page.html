@@ -5,6 +5,21 @@
 </ion-header>
 
 <ion-content padding>
+
+    <ion-list>
+        <ion-list-header>Select Module</ion-list-header>
+        <ion-item>
+          <ion-label>Module</ion-label>
+          <ion-select [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="Select One" [(ngModel)]="selectedModule"
+            (ionChange)="onSelectModule(selectedModule)">
+            <ion-select-option *ngFor="let module of modules" [value]="module">
+              {{ module.title }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+      <div *ngIf="this.selectedModule">
+
   <ion-list>
     <ion-list-header>
       <ion-label>Files</ion-label>
@@ -31,4 +46,6 @@
       </ion-card>
     </ion-item>
   </ion-list>
+
+</div>
 </ion-content>

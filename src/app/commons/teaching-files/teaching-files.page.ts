@@ -9,6 +9,9 @@ import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { ProfessorHomePage } from '../../professor/professor-home/professor-home.page';
 import { AlertController } from '@ionic/angular';
 import { AuthService } from '../../service/auth.service';
+import { Student } from '../../models/Student';
+import { Module } from '../../models/Module';
+import { Professor } from '../../models/Professor';
 
 
 @Component({
@@ -22,10 +25,15 @@ export class TeachingFilesPage implements OnInit {
   files: Array<TeachingMaterial>;
   id: string = null;
   showRateId: number = null;
-  studentUser: boolean = false;
+  studentUser = false;
+  modules: Array<Module> = [];
+  selectedModule: Module;
+
+  customActionSheetOptions: any = {
+    header: 'Module'
+  };
 
   constructor(private getService: GetService,
-    private route: ActivatedRoute,
     private transfer: FileTransfer,
     private file: File,
     private toastCtrl: ToastController,
@@ -36,26 +44,69 @@ export class TeachingFilesPage implements OnInit {
 
 
   ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id');
 
-    this.getService.findFileByModule(Number(this.id)).subscribe(files => {
+    if (this.authService.getToken('token') === '"student"') {
+      const student: Student = this.authService.getLoggedUser('user');
+      console.log(student);
+      this.studentUser = true;
+      this.getService.getModuleByCourse(student.course.courseId).subscribe(modules => {
+        this.modules = modules;
+        console.log(this.modules);
+      });
+
+    } else {
+      const prof: Professor = this.authService.getLoggedUser('user');
+      console.log(prof);
+      this.getService.findModuleByProf(prof.professorId).subscribe(modules => {
+        this.modules = modules;
+        console.log(this.modules);
+      });
+    }
+    /*
+        this.getService.findFileByModule(Number(this.id)).subscribe(files => {
+          this.files = files;
+          console.log(this.files);
+          if (this.authService.getToken('token') == '"student"') {
+            this.studentUser = true;
+          } else {
+            this.files.forEach(file => {
+              this.getService.findRatingByTMId(file.teachingMaterialId).subscribe(ratings => {
+                if (ratings != null) {
+                  let sum = 0;
+                  ratings.forEach(rating => {
+                    sum = sum + Number(rating.rate);
+                  });
+                  const average = sum / ratings.length;
+                  file.meanRate = average;
+                }
+              });
+            });
+          }
+        }); */
+  }
+
+  onSelectModule(module: Module) {
+    console.log(module);
+    this.getService.findFileByModule(this.selectedModule.moduleId).subscribe(files => {
       this.files = files;
       console.log(this.files);
-      if (this.authService.getToken('token') == '"student"') {
+      if (this.authService.getToken('token') === '"student"') {
         this.studentUser = true;
       } else {
-        this.files.forEach(file => {
-          this.getService.findRatingByTMId(file.teachingMaterialId).subscribe(ratings => {
-            if (ratings != null) {
-              var sum: number = 0;
-              ratings.forEach(rating => {
-                sum = sum + Number(rating.rate);
-              });
-              var average = sum / ratings.length;
-              file.meanRate = average;
-            }
+        if (this.files != null) {
+          this.files.forEach(file => {
+            this.getService.findRatingByTMId(file.teachingMaterialId).subscribe(ratings => {
+              if (ratings != null) {
+                let sum = 0;
+                ratings.forEach(rating => {
+                  sum = sum + Number(rating.rate);
+                });
+                const average = sum / ratings.length;
+                file.meanRate = average;
+              }
+            });
           });
-        });
+        }
       }
     });
   }
@@ -78,10 +129,10 @@ export class TeachingFilesPage implements OnInit {
         this.presentToastWithOptions(this.file.externalRootDirectory +
           '/Download/' + fileName, fileType);
       }, (error) => {
-        console.log(error)
+        console.log(error);
       });
-    //window.open(this.getService.downloadFile(fileId), '_blank');
-  };
+    // window.open(this.getService.downloadFile(fileId), '_blank');
+  }
 
 
 
@@ -89,7 +140,7 @@ export class TeachingFilesPage implements OnInit {
     this.fileOpener.open(filePath, fileType)
       .then(() => console.log('File is opened'))
       .catch(e => console.log('Error opening file', e));
-  };
+  }
 
   async presentToastWithOptions(filePath, fileType) {
     const toast = await this.toastCtrl.create({
@@ -105,18 +156,18 @@ export class TeachingFilesPage implements OnInit {
     console.log('Dismissed toast', dismiss);
     if (dismiss.role === 'cancel') {
       this.openFile(filePath, fileType);
-    };
-  };
+    }
+  }
 
   humanFileSize(bytes, si) {
-    var thresh = si ? 1000 : 1024;
-    if (bytes < thresh) return bytes + ' B';
-    var units = si ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'] : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
-    var u = -1;
+    const thresh = si ? 1000 : 1024;
+    if (bytes < thresh) { return bytes + ' B'; }
+    const units = si ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'] : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
+    let u = -1;
     do {
       bytes /= thresh;
       ++u;
     } while (bytes >= thresh);
     return bytes.toFixed(1) + ' ' + units[u];
-  };
+  }
 }

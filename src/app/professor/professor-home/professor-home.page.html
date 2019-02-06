@@ -6,25 +6,38 @@
 
 <ion-content padding>
 
-  <ion-list>
-    <ion-list-header>Select Module</ion-list-header>
+  <ion-card>
     <ion-item>
-      <ion-label>Module</ion-label>
-      <ion-select [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="Select One" [(ngModel)]="selectedModule"
-        (ionChange)="onSelectModule(selectedModule)">
-        <ion-select-option *ngFor="let module of modules" [value]="module">
-          {{ module.title }}
-        </ion-select-option>
-      </ion-select>
+      <ion-icon name="school" slot="start"></ion-icon>
+      <ion-label>{{this.dd | date: 'fullDate'}}</ion-label>
+      <!-- <ion-button fill="outline" slot="end">View</ion-button> -->
     </ion-item>
-  </ion-list>
-  <div *ngIf="this.selectedModule">
 
-    <ion-button href="/teaching-files/{{this.selectedModule.moduleId}}" expand="block" color="light">Teaching Material</ion-button>
-    <ion-button expand="block" color="light">File Upload</ion-button>
-    <ion-button expand="block" color="light">Chat</ion-button>
-    <ion-button expand="block" color="light">Notifications</ion-button>
-    <ion-button expand="block" color="light">Daily Class</ion-button>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let calendar of calendars">
+          <ion-card>
+            <ion-card-content>
+              <ion-card-subtitle>{{calendar.module.title}}</ion-card-subtitle>
+              <br>Room: {{calendar.room.name}}
+              <br>From: {{calendar.startTime}} To: {{calendar.endTime}}
+            </ion-card-content>
+          </ion-card>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-row>
+    <ion-col align="left">
+      <ion-button expand="block" color="primary" (click)="prev()">
+        <ion-icon src="assets/icon/src/chevron-left.svg"></ion-icon>
+      </ion-button>
+    </ion-col>
+    <ion-col align="right">
+      <ion-button expand="block" color="primary" (click)="next()">
+        <ion-icon src="assets/icon/src/chevron-right.svg"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
 
-  </div>
 </ion-content>

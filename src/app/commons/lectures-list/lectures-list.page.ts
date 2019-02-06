@@ -45,10 +45,6 @@ export class LecturesListPage implements OnInit {
     // se l'utente loggato è un professore restituisce i suoi moduli
     // se l'utente loggato è uno studente restituisce i moduli del corso a cui è iscritto
     // relativi all'anno corrente e al semestre corrente magari...
-    this.getService.getCalendaByModule(4).subscribe(lectures => {
-      this.lectures = lectures;
-      console.log(this.lectures);
-    });
   }
 
   onSelectModule(module: Module) {
@@ -56,7 +52,9 @@ export class LecturesListPage implements OnInit {
     this.getService.getCalendaByModule(this.selectedModule.moduleId).subscribe(lectures => {
       this.lectures = lectures;
       console.log(this.lectures);
+      if (this.lectures != null) {
       this.lectures.sort((val1, val2) => new Date(val2.date).valueOf() - new Date(val1.date).valueOf());
+      }
     });
   }
 

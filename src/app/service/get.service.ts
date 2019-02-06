@@ -37,6 +37,8 @@ export class GetService {
   getCalendarByModuleUrl: string = 'http://' + this.IP + ':8080/SpringApp/calendar/findByModuleId/';
   getModuleByCourseUrl: string = 'http://' + this.IP + ':8080/SpringApp/module/findAll/';
   getRatingByStudentAndLectureUrl: string = 'http://' + this.IP + ':8080/SpringApp/lectureRating/findByStudentAndLecture/';
+  findCalendarByProAndDatefUrl: string = 'http://' + this.IP + ':8080/SpringApp/calendar/findByProfessorAndDate/';
+  findCalendarByStudentAndDateUrl: string = 'http://' + this.IP + ':8080/SpringApp/calendar/findByStudentAndDate/';
 
   constructor(public http: HttpClient) {
     console.log('Hello GetProvider Provider');
@@ -97,5 +99,14 @@ export class GetService {
 
   getRatingByStudentAndLecture(studentId: number, calendarId: number): Observable<LectureRating> {
     return this.http.get<LectureRating>(this.getRatingByStudentAndLectureUrl + studentId + '/' + calendarId);
+  }
+
+  findCalendarByProfAndDate(profId: number, date: string): Observable<Array<Calendar>> {
+    return this.http.get<Array<Calendar>>(this.findCalendarByProAndDatefUrl + profId + '/' + date);
+  }
+
+  findCalendarByStudentAndDate(studentId: number, year: number, date: string): Observable<Array<Calendar>> {
+    return this.http.get<Array<Calendar>>(this.findCalendarByStudentAndDateUrl +
+      studentId + '/' + year + '/' + date);
   }
 }

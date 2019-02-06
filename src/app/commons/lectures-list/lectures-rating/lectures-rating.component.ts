@@ -15,7 +15,7 @@ export class LecturesRatingComponent implements OnInit {
 
   @Input() lecture: Calendar;
   rate = 2;
-  rated = false;
+  rated = true;
   lectureRating: LectureRating = {};
   student: Student;
   calendar: Calendar = {};
@@ -29,7 +29,15 @@ export class LecturesRatingComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.getRating();
+    this.getService.getRatingByStudentAndLecture(this.student.studentId, this.lecture.calendarId).
+    subscribe(rating => {
+      if (rating != null) {
+        this.lectureRating = rating;
+        this.rated = true;
+      } else {
+        this.rated = false;
+      }
+    });
   }
 
   getRating() {
