@@ -5,6 +5,7 @@ import { AuthService } from '../../../service/auth.service';
 import { Student } from '../../../models/Student';
 import { PostService } from '../../../service/post.service';
 import { GetService } from '../../../service/get.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-lectures-rating',

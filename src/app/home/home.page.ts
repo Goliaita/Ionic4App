@@ -3,11 +3,14 @@ import {Events, ToastController} from '@ionic/angular';
 import {Professor} from '../models/Professor';
 import {Student} from '../models/Student';
 import {GetService} from '../service/get.service';
-import {AngularFireAuth} from "angularfire2/auth";
+import {AngularFireAuth} from 'angularfire2/auth';
 import UserCredential = firebase.auth.UserCredential;
 import { Router } from '@angular/router';
 import { AuthService } from '../service/auth.service';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { FcmService } from '.././service/fcm.service';
+import { Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -32,7 +35,8 @@ export class HomePage {
               private toastCtrl: ToastController,
               private router: Router,
               private authService: AuthService,
-              private fireStore: AngularFireStorage) { }
+              private fireStore: AngularFireStorage,
+              private fcm: FcmService) {}
 
   submit(){
     console.log(this.email + ' ' + this.password);
@@ -49,6 +53,7 @@ export class HomePage {
         if(loggedUser.professor != null){
           console.log("loggato");
           this.professor = loggedUser.professor;
+          this.subscribeNotifications(this.professor.person.personId);
           this.authService.sendToken(this.professor, 'user');
           this.authService.sendToken('professor', 'token');
           this.fireStore.storage.ref('/images/' + this.professor.person.personId + '/firebase-ico.png').
@@ -59,6 +64,7 @@ export class HomePage {
           console.log(loggedUser.professor);
         }else if (loggedUser.student != null){
           this.student = loggedUser.student;
+          this.subscribeNotifications(this.student.person.personId);
           this.authService.sendToken(this.student, 'user');
           this.authService.sendToken('student', 'token');
           this.fireStore.storage.ref('/images/' + this.student.person.personId + '/firebase-ico.png').
@@ -89,6 +95,24 @@ export class HomePage {
     } else {
       this.type = 'password';
     }
+  }
+
+  subscribeNotifications(id) {
+        // Get a FCM token
+        this.fcm.getToken(id);
+
+        // Listen to incoming messages
+        this.fcm.listenToNotifications().pipe(
+          tap(async msg => {
+            // show a toast
+            const toast = await this.toastCtrl.create({
+              message: msg.body,
+              duration: 3000
+            });
+            toast.present();
+          })
+        )
+        .subscribe();
   }
 
   presentToast(message: string) {

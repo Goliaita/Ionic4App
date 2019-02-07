@@ -21,7 +21,7 @@ const httpOptions = {
 export class GetService {
 
   //IP = 'localhost';
-  IP = '192.168.1.6';
+  IP = '192.168.1.4';
 
   loginUrl: string = 'http://' + this.IP + ':8080/SpringApp/login/';
   findCourseByProfessorIdUrl: string = 'http://' + this.IP + ':8080/SpringApp/professor/findModuleByProfessorId/';

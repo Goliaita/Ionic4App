@@ -4,6 +4,7 @@ import {Events, Platform} from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -26,8 +27,8 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private event: Events) {
-      console.log("HELLO")
     this.initializeApp();
+
     event.subscribe('parsing:data', (user) => {
       user.url = user.url.substr(1).slice(0, -1);
       this.user = user;

@@ -18,6 +18,8 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
 import {AngularFireStorageModule} from '@angular/fire/storage';
 import {HttpClientModule} from '@angular/common/http';
 
+import { Firebase } from '@ionic-native/firebase/ngx';
+
 import { FileTransfer} from '@ionic-native/file-transfer/ngx';
 import {File} from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
@@ -26,6 +28,7 @@ import { environment } from '../environments/environment';
 import { TeachingFilesPage } from './commons/teaching-files/teaching-files.page';
 import { TeachingFilesPageModule } from './commons/teaching-files/teaching-files.module';
 import { DatePipe } from '@angular/common';
+import { FcmService } from './service/fcm.service';
 
 
 @NgModule({
@@ -51,7 +54,9 @@ import { DatePipe } from '@angular/common';
     FileTransfer,
     File,
     FileOpener,
-    DatePipe
+    DatePipe,
+    FcmService,
+    Firebase
   ],
   bootstrap: [AppComponent],
   exports: [],
