@@ -53,7 +53,9 @@ export class HomePage {
         if(loggedUser.professor != null){
           console.log("loggato");
           this.professor = loggedUser.professor;
-          this.subscribeNotifications(this.professor.person.personId);
+          this.fcm.subscribeNotifications(this.professor.person.personId);
+
+          this.fcm.showMessages().subscribe();
           this.authService.sendToken(this.professor, 'user');
           this.authService.sendToken('professor', 'token');
           this.fireStore.storage.ref('/images/' + this.professor.person.personId + '/firebase-ico.png').
@@ -64,7 +66,9 @@ export class HomePage {
           console.log(loggedUser.professor);
         }else if (loggedUser.student != null){
           this.student = loggedUser.student;
-          this.subscribeNotifications(this.student.person.personId);
+          this.fcm.subscribeNotifications(this.student.person.personId);
+
+          this.fcm.showMessages().subscribe();
           this.authService.sendToken(this.student, 'user');
           this.authService.sendToken('student', 'token');
           this.fireStore.storage.ref('/images/' + this.student.person.personId + '/firebase-ico.png').
@@ -97,23 +101,6 @@ export class HomePage {
     }
   }
 
-  subscribeNotifications(id) {
-        // Get a FCM token
-        this.fcm.getToken(id);
-
-        // Listen to incoming messages
-        this.fcm.listenToNotifications().pipe(
-          tap(async msg => {
-            // show a toast
-            const toast = await this.toastCtrl.create({
-              message: msg.body,
-              duration: 3000
-            });
-            toast.present();
-          })
-        )
-        .subscribe();
-  }
 
   presentToast(message: string) {
     let text = '';

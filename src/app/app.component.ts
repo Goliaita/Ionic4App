@@ -3,6 +3,7 @@ import {Component} from '@angular/core';
 import {Events, Platform} from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { FcmService } from './service/fcm.service';
 
 
 @Component({
@@ -26,7 +27,8 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private event: Events) {
+    private event: Events,
+  private fcm: FcmService) {
     this.initializeApp();
 
     event.subscribe('parsing:data', (user) => {
@@ -52,6 +54,7 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.fcm.showMessages().subscribe();
     });
 
   }

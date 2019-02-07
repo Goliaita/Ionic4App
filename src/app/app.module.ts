@@ -20,6 +20,10 @@ import {HttpClientModule} from '@angular/common/http';
 
 import { Firebase } from '@ionic-native/firebase/ngx';
 
+
+import { AngularFireMessagingModule } from '@angular/fire/messaging';
+import { AngularFireFunctionsModule } from '@angular/fire/functions';
+
 import { FileTransfer} from '@ionic-native/file-transfer/ngx';
 import {File} from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
@@ -43,7 +47,9 @@ import { FcmService } from './service/fcm.service';
       AngularFireAuthModule,
       AngularFireDatabaseModule,
       AngularFireStorageModule,
-      HttpClientModule
+      HttpClientModule,
+      AngularFireMessagingModule,
+      AngularFireFunctionsModule
   ],
   providers: [
     StatusBar,
