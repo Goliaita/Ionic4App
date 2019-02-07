@@ -129,8 +129,8 @@ export class ChatPagePage implements OnInit {
                 let indexBuff = [];
                 modules.forEach(module => {
                     this.chatList.forEach(key => {
-                        if (key.studentId != this.student.person.personId &&
-                            key.professorId != module.professor.person.personId){
+                        if (key.studentId == this.student.person.personId &&
+                            key.professorId == module.professor.person.personId){
                             indexBuff.push(index);
                         }
                     });

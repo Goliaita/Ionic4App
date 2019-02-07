@@ -3,9 +3,9 @@
     <ion-menu>
       <ion-header>
         <ion-toolbar>
-          <div>
+          <div *ngIf="user.url != ''">
             <ion-avatar>
-              <img src="{{user.url}}" alt="">
+              <img src="{{user.url}}" alt="" >
             </ion-avatar>
           </div>
           <div><h3>{{user.firstName}} {{user.lastName}}</h3></div>

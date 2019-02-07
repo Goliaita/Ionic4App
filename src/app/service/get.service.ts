@@ -18,7 +18,7 @@ const httpOptions = {
 export class GetService {
 
   //IP = 'localhost';
-  IP = '192.168.1.242';
+  IP = '192.168.1.243';
 
   loginUrl: string = 'http://' + this.IP + ':8080/SpringApp/login/';
   findCourseByProfessorIdUrl: string = 'http://' + this.IP + ':8080/SpringApp/professor/findModuleByProfessorId/';
@@ -26,6 +26,7 @@ export class GetService {
   findProfessorsByCourseIdUrl: string = 'http://' + this.IP + ':8080/SpringApp/module/findAll/';
   findModuleByProfUrl: string = 'http://' + this.IP + ':8080/SpringApp/module/findByProf/';
   findFileByModuleUrl: string = 'http://'+ this.IP +':8080/SpringApp/teachingMaterial/findByModule/';
+  getCalendarByUrl: string = 'http://' + this.IP + ':8080/SpringApp/lectureCalendar/findByModule';
 
   constructor(public http: HttpClient) {
     console.log('Hello GetProvider Provider');
