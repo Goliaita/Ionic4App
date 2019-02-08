@@ -8,4 +8,5 @@ export interface ChatList{
   chatType?: string;
   moduleId?: number;
   courseId?: number;
+  senderName?: string;
 }

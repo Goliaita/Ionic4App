@@ -18,12 +18,12 @@ const httpOptions = {
 export class GetService {
 
   //IP = 'localhost';
-  IP = '192.168.1.243';
+  IP = 'localhost';
 
   loginUrl: string = 'http://' + this.IP + ':8080/SpringApp/login/';
   findCourseByProfessorIdUrl: string = 'http://' + this.IP + ':8080/SpringApp/professor/findModuleByProfessorId/';
   findAllStudentByCourseUrl: string = 'http://' + this.IP + ':8080/SpringApp/student/findAll/';
-  findProfessorsByCourseIdUrl: string = 'http://' + this.IP + ':8080/SpringApp/module/findAll/';
+  findModulesByCourseIdUrl: string = 'http://' + this.IP + ':8080/SpringApp/module/findAll/';
   findModuleByProfUrl: string = 'http://' + this.IP + ':8080/SpringApp/module/findByProf/';
   findFileByModuleUrl: string = 'http://'+ this.IP +':8080/SpringApp/teachingMaterial/findByModule/';
   getCalendarByUrl: string = 'http://' + this.IP + ':8080/SpringApp/lectureCalendar/findByModule';
@@ -50,8 +50,8 @@ export class GetService {
     return this.http.get<Array<Student>>(this.findAllStudentByCourseUrl + module);
   }
 
-  findProfessorsByCourseId(courseId: number): Observable<Array<Module>>{
-    return this.http.get<Array<Module>>(this.findProfessorsByCourseIdUrl + courseId);
+  findModulesByCourseId(courseId: number): Observable<Array<Module>>{
+    return this.http.get<Array<Module>>(this.findModulesByCourseIdUrl + courseId);
   }
 
   findModuleByProf(professorId: number): Observable<Array<Module>>{

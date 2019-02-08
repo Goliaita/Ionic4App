@@ -94,35 +94,50 @@ export class ChatPagePage implements OnInit {
     }
 
     loadChat(){
-        this.chatHistory.collection(''+this.chatId).valueChanges().subscribe( messages => {
-            this.messages = messages;
-            if(this.chatData.chatType == 'Private'){
-                if(this.userType.type == 'student'){
+        if(this.chatData.chatType == 'Public'){
+            this.chatHistory.collection('modules').doc(''+this.chatId).collection('chat').
+            valueChanges().subscribe(messages=>{
+                this.messages = messages;
+                this.pageName = this.chatData.chatName;
+                if(this.messages.length == 1) {
+                    this.messages[0].hours = new Date(this.messages[0].date.toDate()).toLocaleTimeString();
+                }else {
+                    this.messages.sort((a, b) => {
+                        a.hours = new Date(a.date.toDate()).toLocaleTimeString();
+                        b.hours = new Date(b.date.toDate()).toLocaleTimeString();
+                        return new Date(a.date.toDate()).getTime() - new Date(b.date.toDate()).getTime();
+
+                    });
+                }
+            });
+        }else {
+            this.chatHistory.collection('privateChat').doc('Ei72O25Dn5EKdRPvmUSb')
+                .collection('' + this.chatId).valueChanges().subscribe(messages => {
+                this.messages = messages;
+                if (this.userType.type == 'student') {
                     this.pageName = this.chatData.professorName;
-                }else{
+                } else {
                     this.pageName = this.chatData.studentName;
                 }
-            }else{
-                this.pageName = this.chatData.chatName;
-            }
-            if(this.messages.length == 1) {
-                this.messages[0].hours = new Date(this.messages[0].date.toDate()).toLocaleTimeString();
-            }else {
-                this.messages.sort((a, b) => {
-                    a.hours = new Date(a.date.toDate()).toLocaleTimeString();
-                    b.hours = new Date(b.date.toDate()).toLocaleTimeString();
-                    return new Date(a.date.toDate()).getTime() - new Date(b.date.toDate()).getTime();
+                if (this.messages.length == 1) {
+                    this.messages[0].hours = new Date(this.messages[0].date.toDate()).toLocaleTimeString();
+                } else {
+                    this.messages.sort((a, b) => {
+                        a.hours = new Date(a.date.toDate()).toLocaleTimeString();
+                        b.hours = new Date(b.date.toDate()).toLocaleTimeString();
+                        return new Date(a.date.toDate()).getTime() - new Date(b.date.toDate()).getTime();
 
-                });
-            }
+                    });
+                }
 
-            this.content.scrollToBottom(1000);
-        });
+                this.content.scrollToBottom(1000);
+            });
+        }
     }
 
     createNewChat(){
         if(this.userType.type == 'student'){
-            this.getService.findProfessorsByCourseId(this.student.course.courseId).subscribe(modules => {
+            this.getService.findModulesByCourseId(this.student.course.courseId).subscribe(modules => {
                 this.courseModuleList = null;
                 let buff = modules;
                 let index = 0;
@@ -169,20 +184,24 @@ export class ChatPagePage implements OnInit {
         if (this.message != '') {
             let message: Message = {};
             if (this.chatData.chatType == 'Public') {
-
-                if (this.chatData.studentId != null) {
+                console.log(this.chatData);
+                if (this.userType.type == 'student') {
                     message.studentId = this.student.studentId;
                     message.studentName = this.student.person.firstName + ' ' + this.student.person.lastName;
+                    message.senderName = message.studentName;
                 } else {
                     message.professorId = this.professor.professorId;
                     message.professorName = this.professor.person.firstName + ' ' + this.professor.person.lastName;
+                    message.senderName = message.professorName;
                 }
+                console.log(message.senderName);
                 message.senderType = this.senderType;
                 message.message = this.message;
                 message.date = Timestamp.fromDate(new Date());
                 message.chatId = this.chatData.chatId;
                 message.chatType = 'Public';
-
+                this.chatHistory.collection('modules').doc(''+this.chatId)
+                    .collection('chat').add(message).then();
 
             } else {
                 message.chatType = 'Private';
@@ -190,17 +209,20 @@ export class ChatPagePage implements OnInit {
                 message.studentName = this.chatData.studentName;
                 message.professorId = this.chatData.professorId;
                 message.professorName = this.chatData.professorName;
+                if(this.userType.type == 'student'){
+                    message.senderName = this.chatData.studentName;
+                }else{
+                    message.senderName = this.chatData.professorName;
+                }
                 message.senderType = this.senderType;
                 message.message = this.message;
                 message.date = Timestamp.fromDate(new Date());
                 message.chatId = this.chatData.chatId;
-
+                this.chatHistory.collection('privateChat').doc('Ei72O25Dn5EKdRPvmUSb')
+                    .collection('' + this.chatData.chatId).add(message).then();
             }
 
             this.message = '';
-
-            console.log(message + ' ' + this.chatData.chatId);
-            this.chatHistory.collection('' + this.chatData.chatId).add(message).then();
 
         }
 
