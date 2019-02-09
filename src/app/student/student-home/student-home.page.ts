@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+
 import { Events } from '@ionic/angular';
 import { AuthService } from '../../service/auth.service';
 import { GetService } from '../../service/get.service';
 import { Student } from '../../models/Student';
+import {ChatList} from '../../models/ChatList';
+import {AngularFirestore} from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { Calendar } from '../../models/LectureCalendar';
 import { DatePipe } from '@angular/common';
@@ -27,16 +30,29 @@ export class StudentHomePage implements OnInit {
     private fireStore: AngularFireStorage,
     private datePipe: DatePipe,
     private fcm: FcmService) {
+    this.userType = this.authService.getLoggedUser('common');
     this.student = this.authService.getLoggedUser('user');
     this.url = this.authService.getToken('image');
-    let user = {
-      firstName: this.student.person.firstName,
-      lastName: this.student.person.lastName,
-      url: this.url,
-      type: 'student'
-    };
-    this.events.publish('parsing:data', user);
-    console.log(this.student);
+    this.getService.findModulesByCourseId(this.student.course.courseId).subscribe(ret =>{
+      ret.forEach(module=>{
+        this.fireStore.collection('chat').doc('kmrVt4jEZwOltgE9sNvR')
+            .collection<ChatList>('privateChat', ref =>
+                ref.where('chatId', '==', module.moduleId)
+            ).valueChanges().subscribe(chats =>{
+              chats.forEach(chat=>{
+                this.chats.push(chat);
+              });
+          this.fireStore.collection('chat').doc('kmrVt4jEZwOltgE9sNvR')
+              .collection<ChatList>('privateChat', ref =>
+                  ref.where('studentID', '==', this.student.person.personId)
+              ).valueChanges().subscribe(ret=>{
+                ret.forEach(chat=>{
+                  this.chats.push(chat);
+                })
+          });
+        });
+      });
+    });
   }
 
   ngOnInit() {
