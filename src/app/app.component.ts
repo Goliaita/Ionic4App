@@ -1,8 +1,11 @@
-import {Component} from '@angular/core';
-
-import {Events, Platform} from '@ionic/angular';
+import { Component } from '@angular/core';
+import { Events, Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { FcmService } from './service/fcm.service';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { environment } from '../environments/environment.prod';
+
 
 @Component({
   selector: 'app-root',
@@ -25,21 +28,25 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private event: Events) {
+    private event: Events,
+    private fcm: FcmService) {
+
     this.initializeApp();
+
     event.subscribe('parsing:data', (user) => {
       this.user = user;
-      if(this.user.type == 'student') {
+      if (this.user.type === 'student') {
         this.appPages = [
           {title: 'Home', url: '/student-home', icon: 'home'},
           {title: 'Chat', url: '/chat-list', icon: 'chatbubbles'},
           {title: 'Gradimento', url: '/approval', icon: 'star'}
         ];
-      }else{
+      } else {
         this.appPages = [
           {title: 'Home', url: '/professor-home', icon: 'home'},
-          {title: 'Chat', url: '/chat-page', icon: 'chatbubbles'}
+          {title: 'Chat', url: '/chat-list', icon: 'chatbubbles'},
           ];
+
       }
     });
 

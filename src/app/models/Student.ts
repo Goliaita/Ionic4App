@@ -7,4 +7,5 @@ export interface Student{
   person: Person;
   registrationDate: Date;
   graduationDate?: Date;
+  year: number;
 }

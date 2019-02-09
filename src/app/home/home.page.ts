@@ -3,11 +3,14 @@ import {Events, ToastController} from '@ionic/angular';
 import {Professor} from '../models/Professor';
 import {Student} from '../models/Student';
 import {GetService} from '../service/get.service';
-import {AngularFireAuth} from "angularfire2/auth";
+import {AngularFireAuth} from 'angularfire2/auth';
 import UserCredential = firebase.auth.UserCredential;
 import { Router } from '@angular/router';
 import { AuthService } from '../service/auth.service';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { FcmService } from '.././service/fcm.service';
+import { Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-home',
@@ -51,12 +54,13 @@ export class HomePage {
                     console.log("loggato");
                     this.professor = loggedUser.professor;
                     this.authService.sendToken(this.professor, 'user');
+                    this.authService.sendToken('professor', 'token');
                     this.fireStore.storage.ref('/images/' + this.professor.person.personId + '/firebase-ico.png').
                     getDownloadURL().then(result =>{
                         this.authService.sendToken(result, 'image');
                         let user = {
-                            firstName: this.student.person.firstName,
-                            lastName: this.student.person.lastName,
+                            firstName: this.professor.person.firstName,
+                            lastName: this.professor.person.lastName,
                             url: result,
                             type: 'professor'
                         };
@@ -64,10 +68,10 @@ export class HomePage {
                         this.events.publish('parsing:data', user);
                     }).catch(err=>{
                         let user = {
-                            firstName: this.student.person.firstName,
-                            lastName: this.student.person.lastName,
+                            firstName: this.professor.person.firstName,
+                            lastName: this.professor.person.lastName,
                             url: '',
-                            type: 'student'
+                            type: 'professor'
                         };
                         this.authService.sendToken(user, 'common');
                         this.events.publish('parsing:data', user);
@@ -76,6 +80,7 @@ export class HomePage {
                 }else if (loggedUser.student != null){
                     this.student = loggedUser.student;
                     this.authService.sendToken(this.student, 'user');
+                    this.authService.sendToken('student', 'token');
                     this.fireStore.storage.ref('/images/' + this.student.person.personId + '/firebase-ico.jpg').
                     getDownloadURL().then(result =>{
                         this.authService.sendToken(result, 'image');
@@ -120,10 +125,12 @@ export class HomePage {
         } else {
             this.type = 'password';
         }
+
     }
 
     presentToast(message: string) {
         let text = '';
+
 
         console.log(message);
         switch (message) {
@@ -161,4 +168,11 @@ export class HomePage {
             position: 'middle'
         });
     }
+
+    const toast = this.toastCtrl.create({
+      message: text,
+      duration: 3000,
+      position: 'middle'
+    });
+  }
 }

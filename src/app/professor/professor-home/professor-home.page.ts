@@ -3,6 +3,10 @@ import { AuthService } from '../../service/auth.service';
 import { Professor } from '../../models/Professor';
 import { GetService } from '../../service/get.service';
 import { Module } from '../../models/Module';
+import { Calendar } from '../../models/LectureCalendar';
+import { filter } from 'rxjs/operators';
+import { DatePipe } from '@angular/common';
+import { FcmService } from '../../service/fcm.service';
 
 @Component({
   selector: 'app-professor-home',
@@ -11,28 +15,56 @@ import { Module } from '../../models/Module';
 })
 export class ProfessorHomePage implements OnInit {
 
-  professor: Professor = null;
-  modules: Array<Module> = [];
-  selectedModule: Module = null;
+  prof: Professor;
+  calendars: Array<Calendar> = [];
+  dd = this.datePipe.transform(new Date(), 'MM-dd-yyyy');
 
   constructor(private authService: AuthService,
-              private getService: GetService) { }
+    private getService: GetService,
+    private datePipe: DatePipe,
+    private fcm: FcmService) {
+    this.prof = this.authService.getLoggedUser('user');
+    console.log(this.prof);
+  }
+
 
   ngOnInit() {
-    this.professor = this.authService.getLoggedUser('user');
-    this.getService.findModuleByProf(this.professor.professorId).subscribe(modules => {
-      this.modules = modules;
-      console.log(this.modules);
+    this.loadLectures();
+    this.fcm.subscribeNotifications(this.prof.person.personId);
+    this.fcm.subscribeToTopic('ticket' + this.prof.person.personId);
+    this.fcm.subscribeToTopic('j9WiyTcLy7g7i0qRZcSH');
+    this.getService.findModuleByProf(this.prof.professorId).subscribe(modules => {
+      modules.forEach(module => {
+        this.fcm.subscribeToTopic('module' + module.moduleId);
+      });
     });
   }
 
-  customActionSheetOptions: any = {
-    header: 'Module',
-    //subHeader: 'Select Module'
-  };
-
-  onSelectModule(){
-    console.log(this.selectedModule)
+  loadLectures() {
+    this.getService.findCalendarByProfAndDate(this.prof.professorId, this.dd).subscribe(async calendars => {
+      this.calendars = calendars;
+      if (calendars != null) {
+        await this.calendars.sort(function (a, b) {
+          return a.startTime.localeCompare(b.startTime);
+        });
+      }
+      await console.log(this.calendars);
+    });
   }
 
+  next() {
+    const day = new Date(this.dd);
+    const nextDay = new Date(day);
+    nextDay.setDate(day.getDate() + 1);
+    this.dd = this.datePipe.transform(nextDay, 'MM-dd-yyyy');
+    this.loadLectures();
+  }
+
+  prev() {
+    const day = new Date(this.dd);
+    const nextDay = new Date(day);
+    nextDay.setDate(day.getDate() - 1);
+    this.dd = this.datePipe.transform(nextDay, 'MM-dd-yyyy');
+    this.loadLectures();
+  }
 }
