@@ -5,19 +5,47 @@
 </ion-header>
 
 <ion-content padding>
+
+    <ion-list>
+        <ion-list-header>Select Module</ion-list-header>
+        <ion-item>
+          <ion-label>Module</ion-label>
+          <ion-select [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="Select One" [(ngModel)]="selectedModule"
+            (ionChange)="onSelectModule(selectedModule)">
+            <ion-select-option *ngFor="let module of modules" [value]="module">
+              {{ module.title }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+      <div *ngIf="this.selectedModule">
+
   <ion-list>
     <ion-list-header>
       <ion-label>Files</ion-label>
     </ion-list-header>
     <ion-item *ngFor="let file of files">
-      <ion-icon name="arrow-dropright"></ion-icon>
-      {{file.fileName}}
-      <div class="item-note" slot="end">
-        {{file.created}}
-<!--           <ion-datetime displayFormat="D MMM YYYY H:mm" min="1997" max="2010" value="{{file.created}}"></ion-datetime>
- -->      </div>
+      <ion-card>
+        <ion-item>
+          <ion-icon name="document" slot="start"></ion-icon>
+          <ion-label>{{file.fileName}}</ion-label>
+          <ion-icon *ngIf='this.studentUser' name="star-half" (click)="onRate(file.teachingMaterialId)"></ion-icon>
+          <ion-icon name="download" (click)="onDownload(file.teachingMaterialId, file.fileName, file.fileType)"></ion-icon>
+        </ion-item>
+        <ion-card-content>
+          Title: {{file.fileName}}
+          <br> Created: {{file.created | date: 'dd MMM yyyy H:mm'}}
+          <br> Size: {{this.humanFileSize(file.size,1)}}
+          <ion-card-header *ngIf='!this.studentUser'>
+            <ion-card-subtitle>Mean Rate: {{file.meanRate || "none"}}</ion-card-subtitle>
+          </ion-card-header>
+          <div *ngIf="this.showRateId === file.teachingMaterialId">
+            <app-rating [file]="file"></app-rating>
+          </div>
+        </ion-card-content>
+      </ion-card>
     </ion-item>
   </ion-list>
 
-
+</div>
 </ion-content>

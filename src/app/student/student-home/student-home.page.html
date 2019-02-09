@@ -1,14 +1,46 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
+    <ion-buttons  slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Home
+        student-home
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-ciao
+    <ion-card>
+        <ion-item>
+          <ion-icon name="school" slot="start"></ion-icon>
+          <ion-label>{{this.dd | date: 'fullDate'}}</ion-label>
+          <!-- <ion-button fill="outline" slot="end">View</ion-button> -->
+        </ion-item>
+    
+        <ion-card-content>
+          <ion-list>
+            <ion-item *ngFor="let calendar of calendars">
+              <ion-card>
+                <ion-card-content>
+                  <ion-card-subtitle>{{calendar.module.title}}</ion-card-subtitle>
+                  <br>Room: {{calendar.room.name}}
+                  <br>From: {{calendar.startTime}} To: {{calendar.endTime}}
+                </ion-card-content>
+              </ion-card>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+      <ion-row>
+        <ion-col align="left">
+          <ion-button expand="block" color="primary" (click)="prev()">
+            <ion-icon src="assets/icon/src/chevron-left.svg"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col align="right">
+          <ion-button expand="block" color="primary" (click)="next()">
+            <ion-icon src="assets/icon/src/chevron-right.svg"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
 </ion-content>

@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
-import {NavController, ToastController} from '@ionic/angular';
+import {Events, ToastController} from '@ionic/angular';
 import {Professor} from '../models/Professor';
 import {Student} from '../models/Student';
 import {GetService} from '../service/get.service';
-import {AngularFireAuth} from "angularfire2/auth";
+import {AngularFireAuth} from 'angularfire2/auth';
 import UserCredential = firebase.auth.UserCredential;
-import {ProfessorHomePage} from '../professor/professor-home/professor-home.page';
-import {StudentHomePage} from '../student/student-home/student-home.page';
 import { Router } from '@angular/router';
 import { AuthService } from '../service/auth.service';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { FcmService } from '.././service/fcm.service';
+import { Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -20,8 +22,8 @@ export class HomePage {
   email: string;
   password: string;
 
-  showPass: boolean = false;
-  type: string = 'password';
+  showPass = false;
+  type = 'password';
 
   professor: Professor;
   student: Student;
@@ -32,56 +34,67 @@ export class HomePage {
               private authFire: AngularFireAuth,
               private toastCtrl: ToastController,
               private router: Router,
-              private authService: AuthService) {
+              private authService: AuthService,
+              private fireStore: AngularFireStorage,
+              private fcm: FcmService) {}
 
-  }
-
-  submit(){
+  submit() {
     console.log(this.email + ' ' + this.password);
-    let user = {
+    const user = {
       email: this.email,
       password: this.password
     };
 
-    this.authFire.auth.signInWithEmailAndPassword(user.email, user.password).then(ret=>{
+    this.authFire.auth.signInWithEmailAndPassword(user.email, user.password).then(ret => {
       console.log(ret);
       this.userCredentials = ret;
 
-      this.getService.login(user).subscribe(loggedUser=>{
-        if(loggedUser.professor != null){
-          console.log("loggato");
+      this.getService.login(user).subscribe(loggedUser => {
+        if (loggedUser.professor != null) {
+          console.log('loggato');
           this.professor = loggedUser.professor;
-
           this.authService.sendToken(this.professor, 'user');
+          this.authService.sendToken('professor', 'token');
+          this.fireStore.storage.ref('/images/' + this.professor.person.personId + '/firebase-ico.png').
+          getDownloadURL().then(result => {
+            this.authService.sendToken(result, 'image');
+          });
           this.router.navigate(['professor-home']);
           console.log(loggedUser.professor);
-        }else if (loggedUser.student != null){
+        } else if (loggedUser.student != null) {
           this.student = loggedUser.student;
           this.authService.sendToken(this.student, 'user');
+          this.authService.sendToken('student', 'token');
+          this.fireStore.storage.ref('/images/' + this.student.person.personId + '/firebase-ico.png').
+          getDownloadURL().then(result => {
+            this.authService.sendToken(result, 'image');
+          });
           this.router.navigate(['student-home']);
-        }else{
-          if(loggedUser == '0'){
+          console.log(loggedUser.student);
+        } else {
+          if (loggedUser == '0') {
             this.presentToast('timeout');
           }
         }
-      }, err =>{
+      }, err => {
         console.log('prova');
         console.log(err);
       });
-    }).catch(err=>{
+    }).catch(err => {
       console.log(err);
       this.presentToast(err.code);
     });
   }
 
-  showPassword(){
+  showPassword() {
     this.showPass = !this.showPass;
-    if(this.showPass){
+    if (this.showPass) {
       this.type = 'text';
     } else {
       this.type = 'password';
     }
   }
+
 
   presentToast(message: string) {
     let text = '';
@@ -116,7 +129,7 @@ export class HomePage {
         text = 'An error has occurred please try again';
         break;
     }
-    let toast = this.toastCtrl.create({
+    const toast = this.toastCtrl.create({
       message: text,
       duration: 3000,
       position: 'middle'

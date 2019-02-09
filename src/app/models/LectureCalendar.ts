@@ -1,14 +1,16 @@
-import {Module} from "./Module";
-import {Room} from "./Room";
-import {RoomEquipment} from "./RoomEquipment";
+import {Module} from './Module';
+import {Room} from './Room';
+import {RoomEquipment} from './RoomEquipment';
+import { Time } from '@angular/common';
+import { Timestamp } from 'rxjs';
 
-export interface LectureCalendar {
+export interface Calendar {
+  date?: Date;
   module?: Module;
   room?: Room;
-  lectureCalendarId?: number;
+  calendarId?: number;
   startTime?: string;
   endTime?: string;
-  date?: string;
   day?: string;
   startDate?: string;
   endDate?: string;
