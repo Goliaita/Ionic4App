@@ -12,4 +12,5 @@ export interface Message {
   chatId?: string;
   hours?: string;
   chatType?: string;
+  senderName?: string;
 }
