@@ -22,8 +22,8 @@ export class HomePage {
   email: string;
   password: string;
 
-  showPass: boolean = false;
-  type: string = 'password';
+  showPass = false;
+  type = 'password';
 
   professor: Professor;
   student: Student;
@@ -38,63 +38,57 @@ export class HomePage {
               private fireStore: AngularFireStorage,
               private fcm: FcmService) {}
 
-  submit(){
+  submit() {
     console.log(this.email + ' ' + this.password);
-    let user = {
+    const user = {
       email: this.email,
       password: this.password
     };
 
-    this.authFire.auth.signInWithEmailAndPassword(user.email, user.password).then(ret=>{
+    this.authFire.auth.signInWithEmailAndPassword(user.email, user.password).then(ret => {
       console.log(ret);
       this.userCredentials = ret;
 
-      this.getService.login(user).subscribe(loggedUser=>{
-        if(loggedUser.professor != null){
-          console.log("loggato");
+      this.getService.login(user).subscribe(loggedUser => {
+        if (loggedUser.professor != null) {
+          console.log('loggato');
           this.professor = loggedUser.professor;
-          this.fcm.subscribeNotifications(this.professor.person.personId);
-
-          this.fcm.showMessages().subscribe();
           this.authService.sendToken(this.professor, 'user');
           this.authService.sendToken('professor', 'token');
           this.fireStore.storage.ref('/images/' + this.professor.person.personId + '/firebase-ico.png').
-          getDownloadURL().then(result =>{
+          getDownloadURL().then(result => {
             this.authService.sendToken(result, 'image');
           });
           this.router.navigate(['professor-home']);
           console.log(loggedUser.professor);
-        }else if (loggedUser.student != null){
+        } else if (loggedUser.student != null) {
           this.student = loggedUser.student;
-          this.fcm.subscribeNotifications(this.student.person.personId);
-
-          this.fcm.showMessages().subscribe();
           this.authService.sendToken(this.student, 'user');
           this.authService.sendToken('student', 'token');
           this.fireStore.storage.ref('/images/' + this.student.person.personId + '/firebase-ico.png').
-          getDownloadURL().then(result =>{
+          getDownloadURL().then(result => {
             this.authService.sendToken(result, 'image');
           });
           this.router.navigate(['student-home']);
           console.log(loggedUser.student);
-        }else{
-          if(loggedUser == '0'){
+        } else {
+          if (loggedUser == '0') {
             this.presentToast('timeout');
           }
         }
-      }, err =>{
+      }, err => {
         console.log('prova');
         console.log(err);
       });
-    }).catch(err=>{
+    }).catch(err => {
       console.log(err);
       this.presentToast(err.code);
     });
   }
 
-  showPassword(){
+  showPassword() {
     this.showPass = !this.showPass;
-    if(this.showPass){
+    if (this.showPass) {
       this.type = 'text';
     } else {
       this.type = 'password';
@@ -135,7 +129,7 @@ export class HomePage {
         text = 'An error has occurred please try again';
         break;
     }
-    let toast = this.toastCtrl.create({
+    const toast = this.toastCtrl.create({
       message: text,
       duration: 3000,
       position: 'middle'

@@ -6,6 +6,7 @@ import { Module } from '../../models/Module';
 import { Calendar } from '../../models/LectureCalendar';
 import { filter } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
+import { FcmService } from '../../service/fcm.service';
 
 @Component({
   selector: 'app-professor-home',
@@ -20,7 +21,8 @@ export class ProfessorHomePage implements OnInit {
 
   constructor(private authService: AuthService,
     private getService: GetService,
-    private datePipe: DatePipe) {
+    private datePipe: DatePipe,
+    private fcm: FcmService) {
     this.prof = this.authService.getLoggedUser('user');
     console.log(this.prof);
   }
@@ -28,6 +30,14 @@ export class ProfessorHomePage implements OnInit {
 
   ngOnInit() {
     this.loadLectures();
+    this.fcm.subscribeNotifications(this.prof.person.personId);
+    this.fcm.subscribeToTopic('ticket' + this.prof.person.personId);
+    this.fcm.subscribeToTopic('j9WiyTcLy7g7i0qRZcSH');
+    this.getService.findModuleByProf(this.prof.professorId).subscribe(modules => {
+      modules.forEach(module => {
+        this.fcm.subscribeToTopic('module' + module.moduleId);
+      });
+    });
   }
 
   loadLectures() {

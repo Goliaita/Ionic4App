@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {Events} from '@ionic/angular';
-import {AuthService} from '../../service/auth.service';
-import {GetService} from '../../service/get.service';
-import {Student} from '../../models/Student';
-import {AngularFireStorage} from '@angular/fire/storage';
+import { Events } from '@ionic/angular';
+import { AuthService } from '../../service/auth.service';
+import { GetService } from '../../service/get.service';
+import { Student } from '../../models/Student';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { Calendar } from '../../models/LectureCalendar';
 import { DatePipe } from '@angular/common';
+import { FcmService } from '../../service/fcm.service';
+import { Module } from '../../models/Module';
 
 @Component({
   selector: 'app-student-home',
@@ -20,10 +22,11 @@ export class StudentHomePage implements OnInit {
   dd = this.datePipe.transform(new Date(), 'MM-dd-yyyy');
 
   constructor(private events: Events,
-              private authService: AuthService,
-              private getService: GetService,
-              private fireStore: AngularFireStorage,
-              private datePipe: DatePipe) {
+    private authService: AuthService,
+    private getService: GetService,
+    private fireStore: AngularFireStorage,
+    private datePipe: DatePipe,
+    private fcm: FcmService) {
     this.student = this.authService.getLoggedUser('user');
     this.url = this.authService.getToken('image');
     let user = {
@@ -38,7 +41,14 @@ export class StudentHomePage implements OnInit {
 
   ngOnInit() {
     this.loadLectures();
+    this.fcm.subscribeNotifications(this.student.person.personId);
+    this.getService.findModulesByCourseId(this.student.course.courseId).subscribe(modules => {
+      modules.forEach(module => {
+        this.fcm.subscribeToTopic('module' + module.moduleId);
+      });
+    });
   }
+
 
   loadLectures() {
     this.getService.findCalendarByStudentAndDate(this.student.course.courseId, this.student.year, this.dd).subscribe(async calendars => {
