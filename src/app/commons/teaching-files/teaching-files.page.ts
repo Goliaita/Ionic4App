@@ -87,13 +87,17 @@ export class TeachingFilesPage implements OnInit {
 
   onSelectModule(module: Module) {
     console.log(module);
-    this.getService.findFileByModule(this.selectedModule.moduleId).subscribe(files => {
+    this.getService.findFileByModule(this.selectedModule.moduleId).subscribe(async files => {
       this.files = files;
-      console.log(this.files);
+      await console.log(this.files);
+      if (this.files != null) {
+        await this.files.sort((val1, val2) => new Date(val2.created).valueOf() - new Date(val1.created).valueOf());
+      }
       if (this.authService.getToken('token') === '"student"') {
         this.studentUser = true;
       } else {
         if (this.files != null) {
+          this.files.sort((val1, val2) => new Date(val2.created).valueOf() - new Date(val1.created).valueOf());
           this.files.forEach(file => {
             this.getService.findRatingByTMId(file.teachingMaterialId).subscribe(ratings => {
               if (ratings != null) {

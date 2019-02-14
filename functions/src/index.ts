@@ -3,22 +3,6 @@ import * as admin from 'firebase-admin';
 
 admin.initializeApp();
 
-
-/* exports.subscribeToTopic = functions.https.onCall(
-    async (data, context) => {
-        await admin.messaging().subscribeToTopic(data.token, data.topic)
-        .catch(e => console.log(e));
-        return `subscribed to ${data.topic}`;
-    }
-);
-
-exports.unsubscribeFromTopic = functions.https.onCall(
-    async (data, context) => {
-        await admin.messaging().unsubscribeFromTopic(data.token, data.topic);
-        return `unsubscribed from ${data.topic}`;
-    }
-);
- */
 exports.sendOnModulesCreate = functions.firestore
     .document('modules/{moduleId}/notifications/{notId}')
     .onCreate(async (snapshot, context) => {
@@ -27,7 +11,7 @@ exports.sendOnModulesCreate = functions.firestore
         const moduleId = context.params.moduleId;
 
         const notification: admin.messaging.Notification = {
-            title: `Notification about ${mod}`,
+            title: `Notification about ${mod} `,
             body: text
         };
 
@@ -48,8 +32,28 @@ exports.sendOnModulesCreate = functions.firestore
         const profId = context.params.profId;
 
         const notification: admin.messaging.Notification = {
-            title: `Ticket: ${title}`,
+            title: `Ticket: ${title} `,
             body: ans
+        };
+
+        const payload: admin.messaging.Message = {
+            notification,
+            topic: `ticket${profId}`
+        };
+
+        return admin.messaging().send(payload);
+    });
+
+    exports.sendOnRatingCreate = functions.firestore
+    .document('tickets/{profId}/ratings/{notId}')
+    .onCreate(async (snapshot, context) => {
+        const file = snapshot.get('file');
+        const rate = snapshot.get('rate');
+        const profId = context.params.profId;
+
+        const notification: admin.messaging.Notification = {
+            title: `${file} `,
+            body: `Gradimento: ${rate} `
         };
 
         const payload: admin.messaging.Message = {
@@ -68,7 +72,7 @@ exports.sendOnModulesCreate = functions.firestore
         const moduleId = context.params.moduleId;
 
         const notification: admin.messaging.Notification = {
-            title: `Message from ${sender}`,
+            title: `${sender}: `,
             body: message
         };
 
@@ -87,8 +91,8 @@ exports.sendOnModulesCreate = functions.firestore
         const sender = snapshot.get('senderName');
         const chat = context.params.chatId;
 
-        const notification: admin.messaging.Notification = {
-            title: `Message from ${sender}`,
+        const notification = {
+            title: `${sender}: `,
             body: message
         };
 

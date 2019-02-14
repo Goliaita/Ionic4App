@@ -21,7 +21,7 @@ const httpOptions = {
 export class GetService {
 
   //IP = 'localhost';
-  IP = 'localhost';
+  IP = '192.168.1.5';
 
 
   loginUrl: string = 'http://' + this.IP + ':8080/SpringApp/login/';
@@ -29,9 +29,8 @@ export class GetService {
   findAllStudentByCourseUrl: string = 'http://' + this.IP + ':8080/SpringApp/student/findAll/';
   findModulesByCourseIdUrl: string = 'http://' + this.IP + ':8080/SpringApp/module/findAll/';
   findModuleByProfUrl: string = 'http://' + this.IP + ':8080/SpringApp/module/findByProf/';
-  findFileByModuleUrl: string = 'http://'+ this.IP +':8080/SpringApp/teachingMaterial/findByModule/';
-  getCalendarByUrl: string = 'http://' + this.IP + ':8080/SpringApp/lectureCalendar/findByModule';
   findFileByModuleUrl: string = 'http://' + this.IP + ':8080/SpringApp/teachingMaterial/findByModule/';
+  getCalendarByUrl: string = 'http://' + this.IP + ':8080/SpringApp/lectureCalendar/findByModule';
   downloadFileUrl: string = 'http://' + this.IP + ':8080/SpringApp/teachingMaterial/downloadFile/';
   findTRByStudentAndTMUrl: string = 'http://' + this.IP + ':8080/SpringApp/tmRating/findByStudentAndTM/';
   findRatingByTMIdUrl: string = 'http://' + this.IP + ':8080/SpringApp/tmRating/findByTmId/';

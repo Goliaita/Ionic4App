@@ -169,10 +169,4 @@ export class HomePage {
         });
     }
 
-    const toast = this.toastCtrl.create({
-      message: text,
-      duration: 3000,
-      position: 'middle'
-    });
-  }
 }

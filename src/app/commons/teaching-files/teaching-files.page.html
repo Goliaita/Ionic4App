@@ -40,7 +40,7 @@
             <ion-card-subtitle>Mean Rate: {{file.meanRate || "none"}}</ion-card-subtitle>
           </ion-card-header>
           <div *ngIf="this.showRateId === file.teachingMaterialId">
-            <app-rating [file]="file"></app-rating>
+            <app-rating [file]="file" [selectedModule]="selectedModule"></app-rating>
           </div>
         </ion-card-content>
       </ion-card>

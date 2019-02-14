@@ -35,7 +35,7 @@
               <br> Day: {{lecture.day}}
               <br> Room: {{lecture.room.name}}
               <div *ngIf="this.showRateId === lecture.calendarId">
-                  <app-lectures-rating [lecture]="lecture"></app-lectures-rating>
+                  <app-lectures-rating [lecture]="lecture" [selectedModule]="selectedModule"></app-lectures-rating>
                 </div>
             </ion-card-content>
           </ion-card>
