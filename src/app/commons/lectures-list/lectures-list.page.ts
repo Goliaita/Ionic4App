@@ -5,7 +5,7 @@ import { AuthService } from '../../service/auth.service';
 import { Professor } from '../../models/Professor';
 import { Module } from '../../models/Module';
 import { Student } from '../../models/Student';
-import { formatDate } from '@angular/common';
+import { formatDate, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-lectures-list',
@@ -21,14 +21,15 @@ export class LecturesListPage implements OnInit {
   showRateId: number = null;
 
   constructor(private getService: GetService,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private datePipe: DatePipe) { }
 
   ngOnInit() {
     if (this.authService.getToken('token') == '"student"') {
       const student: Student = this.authService.getLoggedUser('user');
       console.log(student);
       this.studentUser = true;
-      this.getService.getModuleByCourse(student.course.courseId).subscribe( modules => {
+      this.getService.getModuleByCourse(student.course.courseId).subscribe(modules => {
         this.modules = modules;
         console.log(this.modules);
       });
@@ -36,7 +37,7 @@ export class LecturesListPage implements OnInit {
     } else {
       const prof: Professor = this.authService.getLoggedUser('user');
       console.log(prof);
-      this.getService.findModuleByProf(prof.professorId).subscribe( modules => {
+      this.getService.findModuleByProf(prof.professorId).subscribe(modules => {
         this.modules = modules;
         console.log(this.modules);
       });
@@ -53,7 +54,8 @@ export class LecturesListPage implements OnInit {
       this.lectures = lectures;
       console.log(this.lectures);
       if (this.lectures != null) {
-      this.lectures.sort((val1, val2) => new Date(val2.date).valueOf() - new Date(val1.date).valueOf());
+        this.lectures.sort((val1, val2) => new Date(val2.date).valueOf() - new Date(val1.date).valueOf());
+        this.lectures = this.lectures.filter(calendar => new Date(calendar.date) <= new Date());
       }
     });
   }

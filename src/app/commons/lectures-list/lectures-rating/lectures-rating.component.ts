@@ -6,6 +6,8 @@ import { Student } from '../../../models/Student';
 import { PostService } from '../../../service/post.service';
 import { GetService } from '../../../service/get.service';
 import { Observable } from 'rxjs';
+import { Module } from '../../../models/Module';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-lectures-rating',
@@ -15,6 +17,7 @@ import { Observable } from 'rxjs';
 export class LecturesRatingComponent implements OnInit {
 
   @Input() lecture: Calendar;
+  @Input() selectedModule: Module;
   rate = 2;
   rated = true;
   lectureRating: LectureRating = {};
@@ -25,7 +28,8 @@ export class LecturesRatingComponent implements OnInit {
 
   constructor(private authService: AuthService,
               private postService: PostService,
-              private getService: GetService) {
+              private getService: GetService,
+              private firestore: AngularFirestore) {
     this.student = this.authService.getLoggedUser('user');
    }
 
@@ -65,6 +69,12 @@ export class LecturesRatingComponent implements OnInit {
      this.postService.postLectureRating(this.lectureRating).subscribe( rating => {
       if (rating != null) {
         console.log(this.lectureRating);
+        this.firestore.collection('tickets').doc(String(this.selectedModule.professor.person.personId))
+        .collection('ratings').add(
+          {
+            file: this.lecture.date,
+            rate: this.rate + ' - ' + this.lectureRating.note
+          });
       }
     });
   }
