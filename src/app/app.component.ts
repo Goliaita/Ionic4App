@@ -58,13 +58,6 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      /*Environment.setEnv({
-          // api key for server
-          'API_KEY_FOR_ANDROID_RELEASE': 'AIzaSyBf27ToMuqEn56IllNGusoKYNbhiJEolnA',
-
-          // api key for local development
-          'API_KEY_FOR_ANDROID_DEBUG': 'AIzaSyBf27ToMuqEn56IllNGusoKYNbhiJEolnA'
-      });*/
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
