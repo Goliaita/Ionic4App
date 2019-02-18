@@ -105,7 +105,7 @@
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-firebase": {},
       "cordova-plugin-googlemaps": {
-        "API_KEY_FOR_ANDROID": "AIzaSyBf27ToMuqEn56IllNGusoKYNbhiJEolnA"
+        "API_KEY_FOR_ANDROID": ""
       }
       "cordova-plugin-console": {},
       "cordova-plugin-file-transfer": {},
