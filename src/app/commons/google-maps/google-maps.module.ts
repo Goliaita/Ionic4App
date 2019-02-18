@@ -5,12 +5,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ApprovalPage } from './approval.page';
+import { GoogleMapsPage } from './google-maps.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: ApprovalPage
+    component: GoogleMapsPage
   }
 ];
 
@@ -21,6 +21,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [ApprovalPage]
+  declarations: [GoogleMapsPage]
 })
-export class ApprovalPageModule {}
+export class GoogleMapsPageModule {}

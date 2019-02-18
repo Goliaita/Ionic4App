@@ -4,7 +4,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-        student-home
+      Home
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -13,18 +13,18 @@
     <ion-card>
         <ion-item>
           <ion-icon name="school" slot="start"></ion-icon>
-          <ion-label>{{this.dd | date: 'fullDate'}}</ion-label>
+          <ion-label>{{dd | date: 'fullDate'}}</ion-label>
           <!-- <ion-button fill="outline" slot="end">View</ion-button> -->
         </ion-item>
     
         <ion-card-content>
           <ion-list>
             <ion-item *ngFor="let calendar of calendars">
-              <ion-card>
+              <ion-card (click)="openMaps(calendar.room.location)">
                 <ion-card-content>
                   <ion-card-subtitle>{{calendar.module.title}}</ion-card-subtitle>
-                  <br>Room: {{calendar.room.name}}
-                  <br>From: {{calendar.startTime}} To: {{calendar.endTime}}
+                  <br>Aula: {{calendar.room.name}}
+                  <br>Da: {{calendar.startTime}} A: {{calendar.endTime}}
                 </ion-card-content>
               </ion-card>
             </ion-item>

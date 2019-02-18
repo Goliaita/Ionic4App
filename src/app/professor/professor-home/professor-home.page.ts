@@ -7,6 +7,8 @@ import { Calendar } from '../../models/LectureCalendar';
 import { filter } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { FcmService } from '../../service/fcm.service';
+import {Router} from '@angular/router';
+import {Room} from '../../models/Room';
 
 @Component({
   selector: 'app-professor-home',
@@ -22,6 +24,7 @@ export class ProfessorHomePage implements OnInit {
   constructor(private authService: AuthService,
     private getService: GetService,
     private datePipe: DatePipe,
+    private router: Router,
     private fcm: FcmService) {
     this.prof = this.authService.getLoggedUser('user');
     console.log(this.prof);
@@ -67,4 +70,10 @@ export class ProfessorHomePage implements OnInit {
     this.dd = this.datePipe.transform(nextDay, 'MM-dd-yyyy');
     this.loadLectures();
   }
+
+  openMaps(room: Room){
+    console.log(room.location);
+    this.router.navigate(['/google-maps'], {queryParams:{selectedRoom: JSON.stringify(room)}}).then();
+  }
+
 }

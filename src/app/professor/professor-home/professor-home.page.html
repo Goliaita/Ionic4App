@@ -1,6 +1,11 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>professor-home</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Home
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -19,8 +24,9 @@
           <ion-card>
             <ion-card-content>
               <ion-card-subtitle>{{calendar.module.title}}</ion-card-subtitle>
-              <br>Room: {{calendar.room.name}}
-              <br>From: {{calendar.startTime}} To: {{calendar.endTime}}
+              <br>Aula: {{calendar.room.name}}  <ion-icon (click)="openMaps(calendar.room)"
+                                                          name="locate" slot="end"></ion-icon>
+              <br>Da: {{calendar.startTime}} A: {{calendar.endTime}}
             </ion-card-content>
           </ion-card>
         </ion-item>

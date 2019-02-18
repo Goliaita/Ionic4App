@@ -4,7 +4,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      chat-list
+      Chat
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -13,7 +13,7 @@
   <div *ngIf="messages == null && courseModuleList == null && studentModuleList == null">
     <ion-list>
       <ion-item *ngFor="let chat of chatList" lines="none" >
-        <ion-card style="background-color: var(--unisalento); color: black; width: 100%"
+        <ion-card style="color: black; width: 100%"
                   (click)="selectChat(chat)">
           <ion-card-header>
             <b style="color: #000000;">{{chat.chatName}}</b>

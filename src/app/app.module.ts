@@ -29,6 +29,7 @@ import { TeachingFilesPage } from './commons/teaching-files/teaching-files.page'
 import { TeachingFilesPageModule } from './commons/teaching-files/teaching-files.module';
 import { DatePipe } from '@angular/common';
 import { FcmService } from './service/fcm.service';
+import {GoogleMaps} from '@ionic-native/google-maps';
 
 
 
@@ -57,7 +58,8 @@ import { FcmService } from './service/fcm.service';
     FileOpener,
     DatePipe,
     FcmService,
-    Firebase
+    Firebase,
+    GoogleMaps
   ],
   bootstrap: [AppComponent],
   exports: [],

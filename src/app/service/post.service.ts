@@ -12,7 +12,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class PostService {
-  IP = '192.168.1.4';
+  IP = '192.168.1.242';
 
   postRatingUrl: string = 'http://' + this.IP + ':8080/SpringApp/tmRating/add';
   postLectureRatingUrl: string = 'http://' + this.IP + ':8080/SpringApp/lectureRating/add';

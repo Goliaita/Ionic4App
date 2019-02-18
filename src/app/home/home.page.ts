@@ -36,27 +36,27 @@ export class HomePage {
                 private router: Router,
                 private authService: AuthService,
                 private fireStore: AngularFireStorage,
-                private events: Events) { }
+                private events: Events) {
+    }
 
-    submit(){
+    submit() {
         console.log(this.email + ' ' + this.password);
         let user = {
             email: this.email,
             password: this.password
         };
 
-        this.authFire.auth.signInWithEmailAndPassword(user.email, user.password).then(ret=>{
+        this.authFire.auth.signInWithEmailAndPassword(user.email, user.password).then(ret => {
             console.log(ret);
             this.userCredentials = ret;
 
-            this.getService.login(user).subscribe(loggedUser=>{
-                if(loggedUser.professor != null){
+            this.getService.login(user).subscribe(loggedUser => {
+                if (loggedUser.professor != null) {
                     console.log("loggato");
                     this.professor = loggedUser.professor;
                     this.authService.sendToken(this.professor, 'user');
                     this.authService.sendToken('professor', 'token');
-                    this.fireStore.storage.ref('/images/' + this.professor.person.personId + '/firebase-ico.png').
-                    getDownloadURL().then(result =>{
+                    this.fireStore.storage.ref('/images/' + this.professor.person.personId + '/firebase-ico.png').getDownloadURL().then(result => {
                         this.authService.sendToken(result, 'image');
                         let user = {
                             firstName: this.professor.person.firstName,
@@ -66,7 +66,7 @@ export class HomePage {
                         };
                         this.authService.sendToken(user, 'common');
                         this.events.publish('parsing:data', user);
-                    }).catch(err=>{
+                    }).catch(err => {
                         let user = {
                             firstName: this.professor.person.firstName,
                             lastName: this.professor.person.lastName,
@@ -75,14 +75,14 @@ export class HomePage {
                         };
                         this.authService.sendToken(user, 'common');
                         this.events.publish('parsing:data', user);
-                    });;
+                    });
+                    ;
                     this.router.navigate(['professor-home']);
-                }else if (loggedUser.student != null){
+                } else if (loggedUser.student != null) {
                     this.student = loggedUser.student;
                     this.authService.sendToken(this.student, 'user');
                     this.authService.sendToken('student', 'token');
-                    this.fireStore.storage.ref('/images/' + this.student.person.personId + '/firebase-ico.jpg').
-                    getDownloadURL().then(result =>{
+                    this.fireStore.storage.ref('/images/' + this.student.person.personId + '/firebase-ico.jpg').getDownloadURL().then(result => {
                         this.authService.sendToken(result, 'image');
                         let user = {
                             firstName: this.student.person.firstName,
@@ -92,7 +92,7 @@ export class HomePage {
                         };
                         this.authService.sendToken(user, 'common');
                         this.events.publish('parsing:data', user);
-                    }).catch(err=>{
+                    }).catch(err => {
                         let user = {
                             firstName: this.student.person.firstName,
                             lastName: this.student.person.lastName,
@@ -103,24 +103,24 @@ export class HomePage {
                         this.events.publish('parsing:data', user);
                     });
                     this.router.navigate(['student-home']);
-                }else{
-                    if(loggedUser == '0'){
+                } else {
+                    if (loggedUser == '0') {
                         this.presentToast('timeout');
                     }
                 }
-            }, err =>{
+            }, err => {
                 console.log('prova');
                 console.log(err);
             });
-        }).catch(err=>{
+        }).catch(err => {
             console.log(err);
             this.presentToast(err.code);
         });
     }
 
-    showPassword(){
+    showPassword() {
         this.showPass = !this.showPass;
-        if(this.showPass){
+        if (this.showPass) {
             this.type = 'text';
         } else {
             this.type = 'password';
@@ -169,10 +169,6 @@ export class HomePage {
         });
     }
 
-    const toast = this.toastCtrl.create({
-      message: text,
-      duration: 3000,
-      position: 'middle'
-    });
-  }
 }
+
+

@@ -9,6 +9,7 @@ import { TeachingMaterial } from '../models/TeachingMaterial';
 import { TmRating } from '../models/TmRating';
 import { Calendar } from '../models/LectureCalendar';
 import { LectureRating } from '../models/LectureRating';
+import {Room} from '../models/Room';
 
 
 const httpOptions = {
@@ -20,8 +21,8 @@ const httpOptions = {
 })
 export class GetService {
 
+  IP = '192.168.1.242';
   //IP = 'localhost';
-  IP = 'localhost';
 
 
   loginUrl: string = 'http://' + this.IP + ':8080/SpringApp/login/';
@@ -29,7 +30,6 @@ export class GetService {
   findAllStudentByCourseUrl: string = 'http://' + this.IP + ':8080/SpringApp/student/findAll/';
   findModulesByCourseIdUrl: string = 'http://' + this.IP + ':8080/SpringApp/module/findAll/';
   findModuleByProfUrl: string = 'http://' + this.IP + ':8080/SpringApp/module/findByProf/';
-  findFileByModuleUrl: string = 'http://'+ this.IP +':8080/SpringApp/teachingMaterial/findByModule/';
   getCalendarByUrl: string = 'http://' + this.IP + ':8080/SpringApp/lectureCalendar/findByModule';
   findFileByModuleUrl: string = 'http://' + this.IP + ':8080/SpringApp/teachingMaterial/findByModule/';
   downloadFileUrl: string = 'http://' + this.IP + ':8080/SpringApp/teachingMaterial/downloadFile/';
@@ -41,6 +41,7 @@ export class GetService {
   getRatingByStudentAndLectureUrl: string = 'http://' + this.IP + ':8080/SpringApp/lectureRating/findByStudentAndLecture/';
   findCalendarByProAndDatefUrl: string = 'http://' + this.IP + ':8080/SpringApp/calendar/findByProfessorAndDate/';
   findCalendarByStudentAndDateUrl: string = 'http://' + this.IP + ':8080/SpringApp/calendar/findByStudentAndDate/';
+  findAllRoomsUrl: string = 'http://' + this.IP + ':8080/SpringApp/room/findAll';
 
   constructor(public http: HttpClient) {
     console.log('Hello GetProvider Provider');
@@ -111,5 +112,9 @@ export class GetService {
   findCalendarByStudentAndDate(studentId: number, year: number, date: string): Observable<Array<Calendar>> {
     return this.http.get<Array<Calendar>>(this.findCalendarByStudentAndDateUrl +
       studentId + '/' + year + '/' + date);
+  }
+
+  findAllRooms(): Observable<Array<Room>>{
+    return this.http.get<Array<Room>>(this.findAllRoomsUrl);
   }
 }

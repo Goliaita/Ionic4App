@@ -11,6 +11,8 @@ import { Calendar } from '../../models/LectureCalendar';
 import { DatePipe } from '@angular/common';
 import { FcmService } from '../../service/fcm.service';
 import { Module } from '../../models/Module';
+import {lifecycleHooksMethods} from 'codelyzer/noLifeCycleCallRule';
+import {LaunchNavigator, LaunchNavigatorOptions} from '@ionic-native/launch-navigator';
 
 @Component({
   selector: 'app-student-home',
@@ -23,36 +25,28 @@ export class StudentHomePage implements OnInit {
   url: string;
   calendars: Array<Calendar> = [];
   dd = this.datePipe.transform(new Date(), 'MM-dd-yyyy');
+  userType: any;
+  chats: Array<ChatList> = [];
 
   constructor(private events: Events,
     private authService: AuthService,
     private getService: GetService,
     private fireStore: AngularFireStorage,
+    private angularFirestore: AngularFirestore,
     private datePipe: DatePipe,
     private fcm: FcmService) {
     this.userType = this.authService.getLoggedUser('common');
     this.student = this.authService.getLoggedUser('user');
     this.url = this.authService.getToken('image');
-    this.getService.findModulesByCourseId(this.student.course.courseId).subscribe(ret =>{
-      ret.forEach(module=>{
-        this.fireStore.collection('chat').doc('kmrVt4jEZwOltgE9sNvR')
-            .collection<ChatList>('privateChat', ref =>
-                ref.where('chatId', '==', module.moduleId)
-            ).valueChanges().subscribe(chats =>{
-              chats.forEach(chat=>{
-                this.chats.push(chat);
-              });
-          this.fireStore.collection('chat').doc('kmrVt4jEZwOltgE9sNvR')
-              .collection<ChatList>('privateChat', ref =>
-                  ref.where('studentID', '==', this.student.person.personId)
-              ).valueChanges().subscribe(ret=>{
-                ret.forEach(chat=>{
-                  this.chats.push(chat);
-                })
-          });
-        });
+      this.angularFirestore.collection('chat').doc('kmrVt4jEZwOltgE9sNvR')
+          .collection<ChatList>('privateChat', ref =>
+              ref.where('studentId', '==', this.student.person.personId)
+          ).valueChanges().subscribe(ret=>{
+            ret.forEach(chat=>{
+              this.chats.push(chat);
+              this.fcm.subscribeToTopic(chat.chatId);
+            })
       });
-    });
   }
 
   ngOnInit() {
@@ -94,4 +88,12 @@ export class StudentHomePage implements OnInit {
     this.loadLectures();
   }
 
+  openMaps(location: string){
+    console.log(location);
+    let options: LaunchNavigatorOptions = {
+      app: LaunchNavigator.APP.GOOGLE_MAPS,
+    };
+    //LaunchNavigator.navigate('40.334374, 18.114254', options).then();
+    LaunchNavigator.userSelect('40.334374, 18.114254', options)
+  }
 }
