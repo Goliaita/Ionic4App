@@ -1,6 +1,9 @@
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
+import { registerLocaleData } from '@angular/common';
+import localeIt from '@angular/common/locales/it';
+registerLocaleData(localeIt, 'it');
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -60,6 +63,7 @@ import {GoogleMaps} from '@ionic-native/google-maps';
     FcmService,
     Firebase,
     GoogleMaps
+    { provide: LOCALE_ID, useValue: 'it' }
   ],
   bootstrap: [AppComponent],
   exports: [],

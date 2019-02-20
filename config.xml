@@ -89,9 +89,8 @@
     <plugin name="cordova-plugin-file-transfer" spec="1.7.1" />
     <plugin name="cordova-plugin-file" spec="6.0.1" />
     <plugin name="cordova-plugin-document-viewer" spec="0.9.10" />
-    <plugin name="cordova-plugin-dialogs" spec="2.0.1" />
     <plugin name="cordova-plugin-firebase" spec="^2.0.5" />
-    <plugin name="cordova-plugin-fcm-with-dependecy-updated" spec="2.4.0" />
+    <allow-navigation href="http://192.168.1.5:8100" sessionid="8e123bef" />
     <engine name="ios" spec="4.5.5" />
     <engine name="android" spec="7.1.4" />
     <engine name="browser" spec="5.0.4" />

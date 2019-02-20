@@ -18,7 +18,7 @@ import {Router} from '@angular/router';
 export class ChatListPage implements OnInit {
 
   messages: Message[] = null;
-  professorModule: Module;
+  professorModules: Array<Module>;
 
   courseModuleList: Array<Module> = null;
   studentModuleList: Array<Student> = null;
@@ -50,8 +50,10 @@ export class ChatListPage implements OnInit {
 
   ngOnInit() {
     if (this.userType.type == 'professor') {
+
       this.senderType = this.userType.type;
       this.retrieveAllChat();
+
     } else {
 
       this.senderType = this.userType.type;

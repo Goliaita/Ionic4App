@@ -24,11 +24,11 @@ export class FcmService {
     private toastController: ToastController
   ) {
     // Bind methods to fix temporary bug in AngularFire
-    try {
-      const _messaging = app.messaging();
-      _messaging.onTokenRefresh = _messaging.onTokenRefresh.bind(_messaging);
-      _messaging.onMessage = _messaging.onMessage.bind(_messaging);
-    } catch (e) { }
+    /*     try {
+          const _messaging = app.messaging();
+          _messaging.onTokenRefresh = _messaging.onTokenRefresh.bind(_messaging);
+          _messaging.onMessage = _messaging.onMessage.bind(_messaging);
+        } catch (e) {} */
   }
 
   subscribeToTopic(topic) {
@@ -38,21 +38,28 @@ export class FcmService {
     });
   }
 
-   subscribeNotifications(id) {
-      // Get a FCM token
-      this.getToken(id);
+  subscribeNotifications(person) {
+    // Get a FCM token
+    this.getToken(person.personId);
+    const fullName = person.firstName + ' ' + person.lastName;
     // Listen to incoming messages
-     this.listenToNotifications().pipe(
+    this.listenToNotifications().pipe(
       tap(async msg => {
-        // show a toast
-        const toast = await this.toastController.create({
-          message: msg,
-          duration: 5000
-        });
-        toast.present();
+        if (await (fullName === msg.title)) {
+          console.log(fullName + ' == ' + msg.title);
+        } else {
+          console.log(fullName + ' != ' + msg.title);
+          // show a toast
+          await console.log(msg);
+          const toast = await this.toastController.create({
+            message: `${msg.title}: ${msg.body}`,
+            duration: 5000,
+            position: 'top'
+          });
+          toast.present();
+        }
       })
-    )
-      .subscribe();
+    ).subscribe();
   }
 
   async getToken(id) {
