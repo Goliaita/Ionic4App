@@ -11,6 +11,8 @@ import { Calendar } from '../../models/LectureCalendar';
 import { DatePipe } from '@angular/common';
 import { FcmService } from '../../service/fcm.service';
 import { Module } from '../../models/Module';
+import {lifecycleHooksMethods} from 'codelyzer/noLifeCycleCallRule';
+import {LaunchNavigator, LaunchNavigatorOptions} from '@ionic-native/launch-navigator';
 
 @Component({
   selector: 'app-student-home',
@@ -26,7 +28,6 @@ export class StudentHomePage implements OnInit {
   userType: any;
   chats: Array<ChatList> = [];
 
-
   constructor(private events: Events,
     private authService: AuthService,
     private getService: GetService,
@@ -39,16 +40,14 @@ export class StudentHomePage implements OnInit {
     this.student = this.authService.getLoggedUser('user');
     this.url = this.authService.getToken('image');
 
-    this.angularFirestore.collection('chat').doc('kmrVt4jEZwOltgE9sNvR')
-      .collection<ChatList>('privateChat', ref =>
-        ref.where('studentId', '==', this.student.person.personId)
-      ).valueChanges().subscribe(ret => {
-        ret.forEach(chat => {
-          this.chats.push(chat);
-        });
-        this.chats.forEach(chat => {
-          this.fcm.subscribeToTopic(chat.chatId);
-        });
+      this.angularFirestore.collection('chat').doc('kmrVt4jEZwOltgE9sNvR')
+          .collection<ChatList>('privateChat', ref =>
+              ref.where('studentId', '==', this.student.person.personId)
+          ).valueChanges().subscribe(ret=>{
+            ret.forEach(chat=>{
+              this.chats.push(chat);
+              this.fcm.subscribeToTopic(chat.chatId);
+            })
       });
   }
 
@@ -98,4 +97,12 @@ export class StudentHomePage implements OnInit {
     this.loadLectures();
   }
 
+  openMaps(location: string){
+    console.log(location);
+    let options: LaunchNavigatorOptions = {
+      app: LaunchNavigator.APP.GOOGLE_MAPS,
+    };
+    //LaunchNavigator.navigate('40.334374, 18.114254', options).then();
+    LaunchNavigator.userSelect('40.334374, 18.114254', options)
+  }
 }

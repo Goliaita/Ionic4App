@@ -50,14 +50,12 @@ export class ChatListPage implements OnInit {
 
   ngOnInit() {
     if (this.userType.type == 'professor') {
-      this.getService.findModuleByProf(this.professor.professorId).subscribe(modules => {
-        console.log(modules);
-        this.professorModules = modules;
-        this.senderType = this.userType.type;
-        console.log(this.userType.type);
-        this.retrieveAllChat();
-      });
+
+      this.senderType = this.userType.type;
+      this.retrieveAllChat();
+
     } else {
+
       this.senderType = this.userType.type;
       this.retrieveAllChat();
     }
@@ -67,6 +65,7 @@ export class ChatListPage implements OnInit {
     if(this.userType.type == 'student'){
       this.getService.findModulesByCourseId(this.student.course.courseId).subscribe(ret =>{
         ret.forEach(module=>{
+          console.log(module.moduleId);
           this.fireStore.collection('chat').doc('kmrVt4jEZwOltgE9sNvR')
               .collection<ChatList>('privateChat', ref =>
                   ref.where('chatId', '==', module.moduleId)
@@ -74,16 +73,17 @@ export class ChatListPage implements OnInit {
             chats.forEach(chat=>{
               this.chatList.push(chat);
             });
-            this.fireStore.collection('chat').doc('kmrVt4jEZwOltgE9sNvR')
-                .collection<ChatList>('privateChat', ref =>
-                    ref.where('studentId', '==', this.student.person.personId)
-                ).valueChanges().subscribe(ret=>{
-              ret.forEach(chat=>{
-                this.chatList.push(chat);
-              });
-              this.authService.sendToken(this.chatList, 'chatList');
-            });
+            this.authService.sendToken(this.chatList, 'chatList');
           });
+        });
+        this.fireStore.collection('chat').doc('kmrVt4jEZwOltgE9sNvR')
+            .collection<ChatList>('privateChat', ref =>
+                ref.where('studentId', '==', this.student.person.personId)
+            ).valueChanges().subscribe(ret=>{
+          ret.forEach(chat=>{
+            this.chatList.push(chat);
+          });
+          this.authService.sendToken(this.chatList, 'chatList');
         });
       });
     }else{
@@ -96,16 +96,17 @@ export class ChatListPage implements OnInit {
             chats.forEach(chat=>{
               this.chatList.push(chat);
             });
-            this.fireStore.collection('chat').doc('kmrVt4jEZwOltgE9sNvR')
-                .collection<ChatList>('privateChat', ref =>
-                    ref.where('professorId', '==', this.professor.person.personId)
-                ).valueChanges().subscribe(ret=>{
-              ret.forEach(chat=>{
-                this.chatList.push(chat);
-              });
-              this.authService.sendToken(this.chatList, 'chatList');
-            });
+            this.authService.sendToken(this.chatList, 'chatList');
           });
+        });
+        this.fireStore.collection('chat').doc('kmrVt4jEZwOltgE9sNvR')
+            .collection<ChatList>('privateChat', ref =>
+                ref.where('professorId', '==', this.professor.person.personId)
+            ).valueChanges().subscribe(ret=>{
+          ret.forEach(chat=>{
+            this.chatList.push(chat);
+          });
+          this.authService.sendToken(this.chatList, 'chatList');
         });
       });
     }

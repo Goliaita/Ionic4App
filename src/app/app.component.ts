@@ -4,7 +4,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { FcmService } from './service/fcm.service';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { environment } from '../environments/environment.prod';
+import { Environment } from '@ionic-native/google-maps';
 
 
 @Component({
@@ -28,8 +28,7 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private event: Events,
-    private fcm: FcmService) {
+    private event: Events) {
 
     this.initializeApp();
 
@@ -39,13 +38,18 @@ export class AppComponent {
         this.appPages = [
           {title: 'Home', url: '/student-home', icon: 'home'},
           {title: 'Chat', url: '/chat-list', icon: 'chatbubbles'},
-          {title: 'Gradimento', url: '/approval', icon: 'star'}
+          {title: 'Lezioni svolte', url: '/lectures-list', icon: 'magnet'},
+          {title: 'File lezioni', url: '/teaching-files', icon: 'document'},
+          {title: 'Maps', url: '/google-maps', icon: 'compass'}
         ];
       } else {
         this.appPages = [
           {title: 'Home', url: '/professor-home', icon: 'home'},
           {title: 'Chat', url: '/chat-list', icon: 'chatbubbles'},
-          ];
+          {title: 'Lezioni svolte', url: '/lectures-list', icon: 'magnet'},
+          {title: 'File lezioni', url: '/teaching-files', icon: 'document'},
+          {title: 'Maps', url: '/google-maps', icon: 'compass'}
+        ];
 
       }
     });
@@ -57,7 +61,9 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
-
+/*
+cordova plugin add cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID="AIzaSyBf27ToMuqEn56IllNGusoKYNbhiJEolnA" --variable API_KEY_FOR_IOS="AIzaSyBf27ToMuqEn56IllNGusoKYNbhiJEolnA"
+*/
   }
 
 }

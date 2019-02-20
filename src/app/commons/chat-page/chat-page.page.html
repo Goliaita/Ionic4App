@@ -16,7 +16,8 @@
   <div *ngIf="messages != null">
       <ion-infinite-scroll position="top" style="width: 100%" >
         <ion-item *ngFor="let message of messages" lines="none" style="margin: 2px auto 2px auto;">
-          <ion-card slot="end" *ngIf="message.senderType == senderType"  class="right-card">
+          <ion-card slot="end" *ngIf="((student != null) && (message.studentId == student.person.personId)) ||
+           ((professor != null) && (message.professorId == professor.person.personId))" class="right-card">
             <ion-card-content [style.font-size]="'16px'" [style.text-alignment]="'center'">
               {{ message.message }}
             </ion-card-content>
@@ -26,7 +27,8 @@
               </ion-col>
             </ion-row>
           </ion-card>
-          <ion-card slot="start" *ngIf="message.senderType != senderType" class="left-card" >
+          <ion-card slot="start" *ngIf="((student != null) && (message.studentId != student.person.personId)) ||
+           ((professor != null) && (message.professorId != professor.person.personId))" class="left-card" >
             <ion-card-content [style.font-size]="'16px'">
               <div *ngIf="message.chatType != null">
                 <b>{{ message.senderType == 'Student' ? message.studentName : message.professorName }}</b>
@@ -39,7 +41,6 @@
               </ion-col>
             </ion-row>
           </ion-card>
-          <!--{{last ? goBottom() : ''}}-->
         </ion-item>
       </ion-infinite-scroll>
   </div>
@@ -55,13 +56,13 @@
             </ion-card-title>
             <ion-card-content>
               <div>
-                <b> {{ courseModule.course.name }} </b>
+                <b> {{ courseModule.title }} </b>
               </div>
               <div>
-               Anno: {{ courseModule.course.year }}
+               Anno: {{ courseModule.year }}
               </div>
               <div>
-                Semestre: {{ courseModule.course.semester}}
+                Semestre: {{ courseModule.semester}}
               </div>
             </ion-card-content>
           </ion-card>

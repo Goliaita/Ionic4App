@@ -64,7 +64,7 @@ export class ChatPagePage implements OnInit {
         this.chatId = this.route.snapshot.paramMap.get('chatId');
         console.log(this.chatId);
         if(this.chatId == 'newChat'){
-            this.pageName = 'Select new Chat';
+            this.pageName = 'Seleziona una nuova chat';
             console.log(this.student);
             this.createNewChat();
         }else{
@@ -75,12 +75,13 @@ export class ChatPagePage implements OnInit {
 
 
     existingChat(){
+        console.log(this.chatList);
         this.chatList.forEach(chat =>{
             if(chat.chatId == this.chatId){
                 this.chatData = chat;
             }
         });
-        console.log(this.chatData == null);
+        console.log(this.chatData);
         if(this.chatData == null){
             this.route.queryParams.forEach(param=>{
                 console.log(param.chatName);
@@ -186,11 +187,11 @@ export class ChatPagePage implements OnInit {
             if (this.chatData.chatType == 'Public') {
                 console.log(this.chatData);
                 if (this.userType.type == 'student') {
-                    message.studentId = this.student.studentId;
+                    message.studentId = this.student.person.personId;
                     message.studentName = this.student.person.firstName + ' ' + this.student.person.lastName;
                     message.senderName = message.studentName;
                 } else {
-                    message.professorId = this.professor.professorId;
+                    message.professorId = this.professor.person.personId;
                     message.professorName = this.professor.person.firstName + ' ' + this.professor.person.lastName;
                     message.senderName = message.professorName;
                 }
