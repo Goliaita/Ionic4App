@@ -22,7 +22,9 @@ export class LecturesRatingComponent implements OnInit {
   rated = true;
   lectureRating: LectureRating = {};
   student: Student;
-  calendar: Calendar = {};
+  calendar: Calendar = {
+    calendarDate: null
+  };
   isenabled = false;
   note: string = null;
 
@@ -61,8 +63,8 @@ export class LecturesRatingComponent implements OnInit {
     this.lectureRating.rate = String(this.rate);
     this.lectureRating.student = this.student;
     this.lectureRating.calendar = this.lecture;
-    this.lectureRating.calendar.startDate = null;
-    this.lectureRating.calendar.endDate = null;
+    this.lectureRating.calendar.calendarDate.startDate = null;
+    this.lectureRating.calendar.calendarDate.endDate = null;
     this.lectureRating.calendar.roomEquipment = null;
     this.lectureRating.date = new Date();
     this.lectureRating.note = this.note;
@@ -72,9 +74,10 @@ export class LecturesRatingComponent implements OnInit {
         this.firestore.collection('tickets').doc(String(this.selectedModule.professor.person.personId))
         .collection('ratings').add(
           {
-            file: this.lecture.date,
+            file: this.lecture.calendarDate.date,
             rate: this.rate + ' - ' + this.lectureRating.note
           });
+          this.getRating();
       }
     });
   }

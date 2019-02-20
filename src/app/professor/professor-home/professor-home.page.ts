@@ -23,30 +23,30 @@ export class ProfessorHomePage implements OnInit {
   chats: Array<ChatList> = [];
 
   constructor(private authService: AuthService,
-              private getService: GetService,
-              private datePipe: DatePipe,
-              private fcm: FcmService,
-              private angularFirestore: AngularFirestore) {
+    private getService: GetService,
+    private datePipe: DatePipe,
+    private fcm: FcmService,
+    private angularFirestore: AngularFirestore) {
     this.prof = this.authService.getLoggedUser('user');
     console.log(this.prof);
 
     this.angularFirestore.collection('chat').doc('kmrVt4jEZwOltgE9sNvR')
-    .collection<ChatList>('privateChat', ref =>
-      ref.where('professorId', '==', this.prof.person.personId)
-    ).valueChanges().subscribe(ret => {
-      ret.forEach(chat => {
-        this.chats.push(chat);
+      .collection<ChatList>('privateChat', ref =>
+        ref.where('professorId', '==', this.prof.person.personId)
+      ).valueChanges().subscribe(ret => {
+        ret.forEach(chat => {
+          this.chats.push(chat);
+        });
+        this.chats.forEach(chat => {
+          this.fcm.subscribeToTopic(chat.chatId);
+        });
       });
-      this.chats.forEach(chat => {
-        this.fcm.subscribeToTopic(chat.chatId);
-      });
-    });
   }
 
 
   ngOnInit() {
     this.loadLectures();
-     this.fcm.subscribeNotifications(this.prof.person);
+    this.fcm.subscribeNotifications(this.prof.person);
     this.fcm.subscribeToTopic('ticket' + this.prof.person.personId);
     this.getService.findModuleByProf(this.prof.professorId).subscribe(modules => {
       modules.forEach(module => {
@@ -55,15 +55,23 @@ export class ProfessorHomePage implements OnInit {
     });
     this.chats.forEach(chat => {
       this.fcm.subscribeToTopic(chat.chatId);
-    }); 
+    });
   }
 
   loadLectures() {
     this.getService.findCalendarByProfAndDate(this.prof.professorId, this.dd).subscribe(async calendars => {
       this.calendars = calendars;
+      console.log(this.calendars);
       if (calendars != null) {
         await this.calendars.sort(function (a, b) {
-          return a.startTime.localeCompare(b.startTime);
+          return a.calendarDate.startTime.localeCompare(b.calendarDate.startTime);
+        });
+        await this.calendars.forEach(calendar => {
+          if (calendar.calendarDate.type === 'LECTURE') {
+            calendar.calendarDate.type = 'Lezione';
+          } else {
+            calendar.calendarDate.type = 'Esame';
+          }
         });
       }
       await console.log(this.calendars);
@@ -75,6 +83,7 @@ export class ProfessorHomePage implements OnInit {
     const nextDay = new Date(day);
     nextDay.setDate(day.getDate() + 1);
     this.dd = this.datePipe.transform(nextDay, 'MM-dd-yyyy');
+    console.log(this.dd);
     this.loadLectures();
   }
 
@@ -83,6 +92,9 @@ export class ProfessorHomePage implements OnInit {
     const nextDay = new Date(day);
     nextDay.setDate(day.getDate() - 1);
     this.dd = this.datePipe.transform(nextDay, 'MM-dd-yyyy');
+    console.log(this.dd);
     this.loadLectures();
   }
+
 }
+

@@ -11,7 +11,7 @@ exports.sendOnModulesCreate = functions.firestore
         const moduleId = context.params.moduleId;
 
         const notification: admin.messaging.Notification = {
-            title: `Notification about ${mod} `,
+            title: `Notification about ${mod}`,
             body: text
         };
 
@@ -32,7 +32,7 @@ exports.sendOnModulesCreate = functions.firestore
         const profId = context.params.profId;
 
         const notification: admin.messaging.Notification = {
-            title: `Ticket: ${title} `,
+            title: `Ticket - ${title}`,
             body: ans
         };
 
@@ -52,7 +52,7 @@ exports.sendOnModulesCreate = functions.firestore
         const profId = context.params.profId;
 
         const notification: admin.messaging.Notification = {
-            title: `${file} `,
+            title: `${file}`,
             body: `Gradimento: ${rate} `
         };
 
@@ -72,7 +72,7 @@ exports.sendOnModulesCreate = functions.firestore
         const moduleId = context.params.moduleId;
 
         const notification: admin.messaging.Notification = {
-            title: `${sender}: `,
+            title: `${sender}`,
             body: message
         };
 
@@ -92,7 +92,7 @@ exports.sendOnModulesCreate = functions.firestore
         const chat = context.params.chatId;
 
         const notification = {
-            title: `${sender}: `,
+            title: `${sender}`,
             body: message
         };
 

@@ -30,7 +30,7 @@ export class TeachingFilesPage implements OnInit {
   selectedModule: Module;
 
   customActionSheetOptions: any = {
-    header: 'Module'
+    header: 'Insegnamenti'
   };
 
   constructor(private getService: GetService,

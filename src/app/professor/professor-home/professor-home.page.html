@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>professor-home</ion-title>
+    <ion-title>Home Professore</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -18,9 +18,10 @@
         <ion-item *ngFor="let calendar of calendars">
           <ion-card>
             <ion-card-content>
-              <ion-card-subtitle>{{calendar.module.title}}</ion-card-subtitle>
-              <br>Room: {{calendar.room.name}}
-              <br>From: {{calendar.startTime}} To: {{calendar.endTime}}
+              <ion-card-title>{{calendar.module.title}}</ion-card-title>
+              <ion-card-subtitle>{{ calendar.calendarDate.type }}</ion-card-subtitle>
+              Aula: {{calendar.room.name}}
+              <br>Dalle: {{calendar.calendarDate.startTime}} Alle: {{calendar.calendarDate.endTime}}
             </ion-card-content>
           </ion-card>
         </ion-item>
@@ -39,5 +40,4 @@
       </ion-button>
     </ion-col>
   </ion-row>
-
 </ion-content>

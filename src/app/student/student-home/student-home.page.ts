@@ -28,13 +28,13 @@ export class StudentHomePage implements OnInit {
 
 
   constructor(private events: Events,
-              private authService: AuthService,
-              private getService: GetService,
-              private fireStore: AngularFireStorage,
-              private angularFirestore: AngularFirestore,
-              private datePipe: DatePipe,
-              private toastController: ToastController,
-              private fcm: FcmService) {
+    private authService: AuthService,
+    private getService: GetService,
+    private fireStore: AngularFireStorage,
+    private angularFirestore: AngularFirestore,
+    private datePipe: DatePipe,
+    private toastController: ToastController,
+    private fcm: FcmService) {
     this.userType = this.authService.getLoggedUser('common');
     this.student = this.authService.getLoggedUser('user');
     this.url = this.authService.getToken('image');
@@ -54,7 +54,7 @@ export class StudentHomePage implements OnInit {
 
   ngOnInit() {
     this.loadLectures();
-     this.fcm.subscribeNotifications(this.student.person);
+    this.fcm.subscribeNotifications(this.student.person);
     this.getService.findModulesByCourseId(this.student.course.courseId).subscribe(modules => {
       modules.forEach(module => {
         this.fcm.subscribeToTopic('module' + module.moduleId);
@@ -68,7 +68,14 @@ export class StudentHomePage implements OnInit {
       this.calendars = calendars;
       if (calendars != null) {
         await this.calendars.sort(function (a, b) {
-          return a.startTime.localeCompare(b.startTime);
+          return a.calendarDate.startTime.localeCompare(b.calendarDate.startTime);
+        });
+        await this.calendars.forEach(calendar => {
+          if (calendar.calendarDate.type === 'LECTURE') {
+            calendar.calendarDate.type = 'Lezione';
+          } else {
+            calendar.calendarDate.type = 'Esame';
+          }
         });
       }
       await console.log(this.calendars);
