@@ -1,9 +1,93 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>chat-page</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      {{pageName}}
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding [scrollEvents]="true">
 
+
+  <!-- Displayed in case of chat selected -->
+  <div *ngIf="messages != null">
+      <ion-infinite-scroll position="top" style="width: 100%" >
+        <ion-item *ngFor="let message of messages" lines="none" style="margin: 2px auto 2px auto;">
+          <ion-card slot="end" *ngIf="((student != null) && (message.studentId == student.person.personId)) ||
+           ((professor != null) && (message.professorId == professor.person.personId))" class="right-card">
+            <ion-card-content [style.font-size]="'16px'" [style.text-alignment]="'center'">
+              {{ message.message }}
+            </ion-card-content>
+            <ion-row>
+              <ion-col class="sending-hour">
+                {{ message.hours }}
+              </ion-col>
+            </ion-row>
+          </ion-card>
+          <ion-card slot="start" *ngIf="((student != null) && (message.studentId != student.person.personId)) ||
+           ((professor != null) && (message.professorId != professor.person.personId))" class="left-card" >
+            <ion-card-content [style.font-size]="'16px'">
+              <div *ngIf="message.chatType != null">
+                <b>{{ message.senderType == 'Student' ? message.studentName : message.professorName }}</b>
+              </div>
+              {{ message.message }}
+            </ion-card-content>
+            <ion-row class="sending-hour">
+              <ion-col >
+                {{ message.hours }} {{ message.senderType == 'Professor' ? '(Professor)' : '' }}
+              </ion-col>
+            </ion-row>
+          </ion-card>
+        </ion-item>
+      </ion-infinite-scroll>
+  </div>
+
+  <div *ngIf="(courseModuleList != null || studentModuleList!= null) && messages == null">
+    <ion-list lines="none">
+      <div *ngIf="courseModuleList != null"> <!-- List for student -->
+        <ion-item *ngFor="let courseModule of courseModuleList">
+          <ion-card style="width: 100%;"
+                  (click)="createChat(courseModule.professor)">
+            <ion-card-title padding>
+              <b>{{ courseModule.professor.person.firstName }} {{ courseModule.professor.person.lastName }}</b>
+            </ion-card-title>
+            <ion-card-content>
+              <div>
+                <b> {{ courseModule.title }} </b>
+              </div>
+              <div>
+               Anno: {{ courseModule.year }}
+              </div>
+              <div>
+                Semestre: {{ courseModule.semester}}
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-item>
+      </div>
+      <div *ngIf="studentModuleList != null"> <!-- List for Professor -->
+        <ion-item *ngFor="let student of studentModuleList">
+          <ion-card style="width: 100%;"
+                  (click)="createChat(student)">
+            <ion-card-title>
+              <b>{{ student.person.firstName }} {{ student.person.lastName }}</b>
+            </ion-card-title>
+          </ion-card>
+        </ion-item>
+      </div>
+    </ion-list>
+  </div>
 </ion-content>
+
+<ion-footer *ngIf="messages != null">
+  <ion-item lines="none">
+    <ion-input type="text" placeholder="Insert message" [(ngModel)]="message"></ion-input>
+    <!--suppress HtmlUnknownAttribute -->
+    <ion-button small clear color="primary" type="button" item-right (click)="sendMessage()">
+      <ion-icon slot="icon-only" name="send"></ion-icon>
+    </ion-button>
+  </ion-item>
+</ion-footer>
