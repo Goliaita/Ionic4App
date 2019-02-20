@@ -43,9 +43,6 @@ export class LecturesListPage implements OnInit {
       });
     }
 
-    // se l'utente loggato è un professore restituisce i suoi moduli
-    // se l'utente loggato è uno studente restituisce i moduli del corso a cui è iscritto
-    // relativi all'anno corrente e al semestre corrente magari...
   }
 
   onSelectModule(module: Module) {
@@ -54,8 +51,23 @@ export class LecturesListPage implements OnInit {
       this.lectures = lectures;
       console.log(this.lectures);
       if (this.lectures != null) {
-        this.lectures.sort((val1, val2) => new Date(val2.date).valueOf() - new Date(val1.date).valueOf());
-        this.lectures = this.lectures.filter(calendar => new Date(calendar.date) <= new Date());
+        this.lectures.sort((val1, val2) => new Date(val2.calendarDate.date).valueOf() - new Date(val1.calendarDate.date).valueOf());
+        this.lectures = this.lectures.filter(calendar => new Date(calendar.calendarDate.date) <= new Date());
+
+        if (this.studentUser === false) {
+          this.lectures.forEach(lecture => {
+            this.getService.findLectureRatings(lecture.calendarId).subscribe( ratings => {
+              if (ratings != null) {
+                let sum = 0;
+                ratings.forEach(rating => {
+                  sum = sum + Number(rating.rate);
+                });
+                const average = sum / ratings.length;
+                lecture.meanRate = average;
+              }
+            });
+          });
+        }
       }
     });
   }

@@ -2,21 +2,21 @@
   <div *ngIf="!this.rated">
     <ion-card>
       <ion-card-header>
-        <ion-card-subtitle>Rate this file</ion-card-subtitle>
+        <ion-card-subtitle>Inserisci il tuo gradimento</ion-card-subtitle>
       </ion-card-header>
       <ion-card-content>
         <ion-item>
           <ion-range min="0" max="5" step="1" snaps="true" color="medium" [(ngModel)]="rate"></ion-range>
           <ion-icon name="checkmark" (click)="onSubmit()"></ion-icon>
         </ion-item>
-        Rate: {{rate}}/5
+        Gradimento: {{rate}}/5
       </ion-card-content>
     </ion-card>
   </div>
   <div *ngIf="this.rated">
     <ion-card>
       <ion-card-header>
-        <ion-card-subtitle>Rate: {{this.rating.rate}}/5</ion-card-subtitle>
+        <ion-card-subtitle>Gradimento: {{this.rating.rate}}/5</ion-card-subtitle>
       </ion-card-header>
     </ion-card>
   </div>
