@@ -4,9 +4,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-
       Home
-
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -27,8 +25,7 @@
 
                   <ion-card-title>{{calendar.module.title}}</ion-card-title>
                   <ion-card-subtitle>{{ calendar.calendarDate.type }}</ion-card-subtitle>
-                  Aula: {{calendar.room.name}} <ion-icon (click)="openMaps(calendar.room)"
-                                                          name="locate" slot="end"></ion-icon>
+                  <ion-icon (click)="openMaps(calendar.room)" name="locate"></ion-icon> Aula: {{calendar.room.name}} 
                   <br>Dalle: {{calendar.calendarDate.startTime}} Alle: {{calendar.calendarDate.endTime}}
                 </ion-card-content>
               </ion-card>

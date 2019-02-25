@@ -1,4 +1,4 @@
-import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import {
   CameraPosition,
   GoogleMap,
@@ -10,11 +10,11 @@ import {
   MyLocation,
   GoogleMapOptions
 } from '@ionic-native/google-maps/ngx';
-import {Platform, ToastController} from '@ionic/angular';
-import {load} from '@angular/core/src/render3';
-import {Environment} from '@ionic-native/google-maps';
-import {GetService} from '../../service/get.service';
-import {Room} from '../../models/Room';
+import { Platform, ToastController } from '@ionic/angular';
+import { load } from '@angular/core/src/render3';
+import { Environment } from '@ionic-native/google-maps';
+import { GetService } from '../../service/get.service';
+import { Room } from '../../models/Room';
 
 
 @Component({
@@ -25,23 +25,23 @@ import {Room} from '../../models/Room';
 export class GoogleMapsPage implements OnInit {
 
   map: GoogleMap;
-  address:string;
+  address: string;
   selectedRoom: Room = null;
   rooms: Array<Room>;
 
   constructor(
-      public toastCtrl: ToastController,
-      private platform: Platform,
-      private getService: GetService) {
+    public toastCtrl: ToastController,
+    private platform: Platform,
+    private getService: GetService) {
 
   }
   ngOnInit() {
     // Since ngOnInit() is executed before `deviceready` event,
     // you have to wait the event.
     this.selectedRoom = JSON.parse(this.platform.getQueryParam('selectedRoom'));
-    this.getService.findAllRooms().subscribe(rooms=>{
+    this.getService.findAllRooms().subscribe(rooms => {
       this.rooms = rooms;
-      this.platform.ready().then(()=>{
+      this.platform.ready().then(() => {
         this.loadMap();
       });
     });
@@ -54,7 +54,6 @@ export class GoogleMapsPage implements OnInit {
     };
 
     Environment.setEnv({
-
     });
 
 
@@ -67,8 +66,8 @@ export class GoogleMapsPage implements OnInit {
 
   }
 
-  showSelectedRoom(){
-    if(this.selectedRoom != null){
+  showSelectedRoom() {
+    if (this.selectedRoom != null) {
       let splitted = this.selectedRoom.location.split(',');
       this.map.addMarker({
         title: 'Aule: ' + this.selectedRoom.name,
@@ -82,20 +81,20 @@ export class GoogleMapsPage implements OnInit {
 
       this.map.animateCamera({
         target: {
-                  lng: Number(splitted[0]),
-                  lat: Number(splitted[1])
-                },
+          lng: Number(splitted[0]),
+          lat: Number(splitted[1])
+        },
         duration: 3000,
         zoom: 20
       });
-    }else{
+    } else {
       this.showAllMarker();
     }
   }
 
 
   showAllMarker() {
-    this.rooms.forEach(room=>{
+    this.rooms.forEach(room => {
       let splitted = room.location.split(',');
       this.map.addMarker({
         title: 'Aule: ' + room.name,

@@ -62,7 +62,7 @@ import {GoogleMaps} from '@ionic-native/google-maps';
     DatePipe,
     FcmService,
     Firebase,
-    GoogleMaps
+    GoogleMaps,
     { provide: LOCALE_ID, useValue: 'it' }
   ],
   bootstrap: [AppComponent],

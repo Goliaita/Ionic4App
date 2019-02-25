@@ -13,7 +13,7 @@ const httpOptions = {
 })
 export class PostService {
 
-  IP = '192.168.1.5';
+  IP = '10.0.218.130';
 
 
   postRatingUrl: string = 'http://' + this.IP + ':8080/SpringApp/tmRating/add';

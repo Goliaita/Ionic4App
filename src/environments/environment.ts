@@ -5,12 +5,7 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: 'AIzaSyD-iPDPj63aSxcWzfOqZYgu57eTDWdw_bo',
-    authDomain: 'webchat-9032a.firebaseapp.com',
-    databaseURL: 'https://webchat-9032a.firebaseio.com',
-    projectId: 'webchat-9032a',
-    storageBucket: 'webchat-9032a.appspot.com',
-    messagingSenderId: '1038272327171'
+
   }
 };
 

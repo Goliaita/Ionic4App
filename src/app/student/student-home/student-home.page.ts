@@ -13,6 +13,8 @@ import { FcmService } from '../../service/fcm.service';
 import { Module } from '../../models/Module';
 import {lifecycleHooksMethods} from 'codelyzer/noLifeCycleCallRule';
 import {LaunchNavigator, LaunchNavigatorOptions} from '@ionic-native/launch-navigator';
+import { Room } from '../../models/Room';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-student-home',
@@ -35,7 +37,8 @@ export class StudentHomePage implements OnInit {
     private angularFirestore: AngularFirestore,
     private datePipe: DatePipe,
     private toastController: ToastController,
-    private fcm: FcmService) {
+    private fcm: FcmService,
+    private router: Router) {
     this.userType = this.authService.getLoggedUser('common');
     this.student = this.authService.getLoggedUser('user');
     this.url = this.authService.getToken('image');
@@ -97,12 +100,15 @@ export class StudentHomePage implements OnInit {
     this.loadLectures();
   }
 
-  openMaps(location: string){
-    console.log(location);
+  openMaps(room: Room){
+    console.log(room.location);
+    this.router.navigate(['/google-maps'], {queryParams:{selectedRoom: JSON.stringify(room)}}).then();
+  }
+    /* console.log(location);
     let options: LaunchNavigatorOptions = {
       app: LaunchNavigator.APP.GOOGLE_MAPS,
     };
     //LaunchNavigator.navigate('40.334374, 18.114254', options).then();
     LaunchNavigator.userSelect('40.334374, 18.114254', options)
-  }
+  } */
 }

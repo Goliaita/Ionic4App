@@ -22,7 +22,7 @@ const httpOptions = {
 export class GetService {
 
 
-  IP = '192.168.1.5';
+  IP = '10.0.218.130';
 
 
 
@@ -35,7 +35,6 @@ export class GetService {
   getCalendarByUrl: string = 'http://' + this.IP + ':8080/SpringApp/lectureCalendar/findByModule';
 
   findFileByModuleUrl: string = 'http://' + this.IP + ':8080/SpringApp/teachingMaterial/findByModule/';
-  getCalendarByUrl: string = 'http://' + this.IP + ':8080/SpringApp/lectureCalendar/findByModule';
   downloadFileUrl: string = 'http://' + this.IP + ':8080/SpringApp/teachingMaterial/downloadFile/';
   findTRByStudentAndTMUrl: string = 'http://' + this.IP + ':8080/SpringApp/tmRating/findByStudentAndTM/';
   findRatingByTMIdUrl: string = 'http://' + this.IP + ':8080/SpringApp/tmRating/findByTmId/';
@@ -124,7 +123,8 @@ export class GetService {
 
   findAllRooms(): Observable<Array<Room>>{
     return this.http.get<Array<Room>>(this.findAllRoomsUrl);
-
+  }
+  
   findLectureRatings(calendarId: number): Observable<Array<LectureRating>> {
     return this.http.get<Array<LectureRating>>(this.findeLectureRatingsUrl + calendarId);
 
